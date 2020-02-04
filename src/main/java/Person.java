@@ -21,13 +21,24 @@ public class Person {
 
 
     public interface State{
+        /**
+        * health
+        */
         int NORMAL = 0;
-        int SUSPECTED = NORMAL+1;
-        int SHADOW = SUSPECTED+1;
-
-        int CONFIRMED = SHADOW+1;
-        int FREEZE = CONFIRMED+1;
-        int CURED = FREEZE+1;
+        /**
+         * todo, inspected
+        */
+        int SUSPECTED = 1;
+        /**
+         * viarus in incubsion status
+        */
+        int SHADOW = 2;
+        int CONFIRMED = 3;
+        /**
+         * confirmed and got a fixed bed in hospital,curing in process
+        */
+        int FREEZE = 4;
+        int CURED = 5;
     }
 
     public Person(City city, int x, int y) {
