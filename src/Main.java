@@ -21,6 +21,7 @@ public class Main {
         frame.setSize(1000, 800);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setTitle("瘟疫传播模拟");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panelThread.start();
     }

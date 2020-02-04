@@ -159,7 +159,7 @@ public class Person {
             Bed bed = Hospital.getInstance().pickBed();//查找空床位
             if (bed == null) {
                 //没有床位了
-                System.out.println("隔离区没有空床位");
+//                System.out.println("隔离区没有空床位");
             } else {
                 //安置病人
                 state = State.FREEZE;

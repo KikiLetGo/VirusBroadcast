@@ -21,6 +21,24 @@ public class PersonPool {
         return personList;
     }
 
+
+    /**
+     * @param state 市民类型 Person.State的值
+     * @return 获取指定人群数量
+     */
+    public int getPeopleSize(int state) {
+        if (state == -1) {
+            return Constants.CITY_PERSON_SIZE;
+        }
+        int i = 0;
+        for (Person person : personList) {
+            if (person.getState() == state) {
+                i++;
+            }
+        }
+        return i;
+    }
+
     private PersonPool() {
         City city = new City(400, 400);
         for (int i = 0; i < Constants.CITY_PERSON_SIZE; i++) {
