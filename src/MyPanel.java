@@ -64,14 +64,19 @@ public class MyPanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * 模拟主时间推移
+     */
     public static int worldTime = 0;
 
     @Override
     public void run() {
         while (true) {
-
+            //TODO 预备各项显示指标
+            //1、新增感染人数
+            //2、剩余床位数量
+            //3、单位时间推移
             this.repaint();
-
             try {
                 Thread.sleep(100);
                 worldTime++;

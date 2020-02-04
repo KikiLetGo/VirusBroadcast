@@ -3,10 +3,10 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * 民众区域池
+ * 区域人群对象池
  *
  * @ClassName: PersonPool
- * @Description: 民众区域池，该地区假设为一个近似封闭的环境，拥有几乎不变的民众数量
+ * @Description: 区域人群对象池，该地区假设为一个近似封闭的环境，拥有几乎不变的民众数量
  * @author: Bruce Young
  * @date: 2020年02月02日 17:21
  */
@@ -23,6 +23,9 @@ public class PersonPool {
         return personList;
     }
 
+    /**
+     * 人群对象池，当前仅单个城市实例
+     */
     private PersonPool() {
         City city = new City(400, 400);
         for (int i = 0; i < 5000; i++) {

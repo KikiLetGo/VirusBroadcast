@@ -17,14 +17,13 @@ public class Main {
         Thread panelThread = new Thread(p);
         JFrame frame = new JFrame();
         frame.add(p);
-        frame.setSize(1000, 800);
+        frame.setSize(1100, 800);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panelThread.start();
-
+        // 从该地区进行初始感染源随机选取。随机选取ORIGINAL_COUNT个Person为初始感染源
         List<Person> people = PersonPool.getInstance().getPersonList();
-        // 初始感染源随机选取。随机选取ORIGINAL_COUNT个Person为初始感染源
         for (int i = 0; i < Constants.ORIGINAL_COUNT; i++) {
             int index = new Random().nextInt(people.size() - 1);
             Person person = people.get(index);
@@ -33,6 +32,7 @@ public class Main {
                 index = new Random().nextInt(people.size() - 1);
                 person = people.get(index);
             }
+            //设定为感染对象
             person.beInfected();
 
         }
