@@ -11,16 +11,10 @@ and tell everyone on BiliBili why it's safer to stay home while the coronavirus 
 
 The code has been modified. If you want to see the original code, please go to https://github.com/KikiLetGo/VirusBroadcast.
 
-武汉加油！中国加油！💪
+**武汉加油！中国加油！💪**
 
 |||
 | --: | :-- |
 | 原始库 | [KikiLetGo/VirusBroadcast](https://github.com/KikiLetGo/VirusBroadcast) |
 | 使用语言 | Java |
 | 原始开发者 | Bruce Yong |
-
-|||
-| --: | :-- |
-| Source Repo | [KikiLetGo/VirusBroadcast](https://github.com/KikiLetGo/VirusBroadcast) |
-| Written in | Java |
-| Original Developer | Bruce Yong |
