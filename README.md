@@ -20,6 +20,8 @@ The code has been modified. If you want to see the original code, please go to h
 
 Specially thank Bruce Yong and his "Ele shiyanshi" (Hungry Lab) for releasing such an educative program.
 
+[原始视频链接 Original Video Link](https://www.bilibili.com/video/av86478875?spm_id_from=333.5.b_6c6966655f6461696c79.18)
+
 |||
 | --: | :-- |
 | 原始库 | [KikiLetGo/VirusBroadcast](https://github.com/KikiLetGo/VirusBroadcast) |
