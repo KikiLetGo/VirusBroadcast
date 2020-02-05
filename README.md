@@ -18,7 +18,7 @@ The code has been modified. If you want to see the original code, please go to h
 
 特别感谢 Bruce Yong 以及他的“Ele实验室”带来如此有教育意义的程序。
 
-Specially thank Bruce Yong and his "Ele shiyanshi" (Hungry Lab) for releasing such educative program.
+Specially thank Bruce Yong and his "Ele shiyanshi" (Hungry Lab) for releasing such an educative program.
 
 |||
 | --: | :-- |
