@@ -18,14 +18,38 @@ public class Person {
     double targetYU;
     double targetSig = 50;
 
-    public interface State {
-        int NORMAL = 0;
-        int SUSPECTED = NORMAL + 1;
-        int SHADOW = SUSPECTED + 1;
+    // public interface State {
+    //     int NORMAL = 0;
+    //     int SUSPECTED = NORMAL + 1;
+    //     int SHADOW = SUSPECTED + 1;
 
-        int CONFIRMED = SHADOW + 1;
-        int FREEZE = CONFIRMED + 1;
-        int CURED = FREEZE + 1;
+    //     int CONFIRMED = SHADOW + 1;
+    //     int FREEZE = CONFIRMED + 1;
+    //     int CURED = FREEZE + 1;
+    // }
+
+    public enum State {
+        NORMAL, SUSPECTED, SHADOW, CONFIRMED, FREEZE, CURED;
+
+        public boolean gt(State another) {
+            return this.compareTo(another) > 0;
+        }
+
+        public boolean ge(State another) {
+            return this.compareTo(another) >= 0;
+        }
+
+        public boolean lt(State another) {
+            return this.compareTo(another) < 0;
+        }
+
+        public boolean le(State another) {
+            return this.compareTo(another) <= 0;
+        }
+
+        public boolean equals(State another) {
+            return this.compareTo(another) == 0;
+        }
     }
 
     public Person(City city, int x, int y) {
@@ -42,13 +66,13 @@ public class Person {
         return value > 0;
     }
 
-    private int state = State.NORMAL;
+    private State state = State.NORMAL;
 
-    public int getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(State state) {
         this.state = state;
     }
 
@@ -72,7 +96,7 @@ public class Person {
     int confirmedTime = 0;
 
     public boolean isInfected() {
-        return state >= State.SHADOW;
+        return state.ge(State.SHADOW);
     }
 
     public void beInfected() {
@@ -149,15 +173,16 @@ public class Person {
     private float SAFE_DIST = 2f;
 
     public void update() {
-        //@TODO找时间改为状态机
-        if (state >= State.FREEZE) {
+        if (state.ge(State.FREEZE)) {
             return;
         }
         if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
             Bed bed = Hospital.getInstance().pickBed();
             if (bed == null) {
-                System.out.println("隔离区没有空床位");
+                // System.out.println("隔离区没有空床位");
+                Main.hospitalState.setText("隔离区没有空床位");
             } else {
+                Main.hospitalState.setText("");
                 state = State.FREEZE;
                 x = bed.getX();
                 y = bed.getY();
@@ -172,7 +197,7 @@ public class Person {
         action();
 
         List<Person> people = PersonPool.getInstance().personList;
-        if (state >= State.SHADOW) {
+        if (state.ge(State.SHADOW)) {
             return;
         }
         for (Person person : people) {

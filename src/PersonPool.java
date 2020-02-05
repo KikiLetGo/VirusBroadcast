@@ -23,7 +23,7 @@ public class PersonPool {
 
     private PersonPool() {
         City city = new City(400, 400);
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < Constants.population; i++) {
             Random random = new Random();
             int x = (int) (100 * random.nextGaussian() + city.getCenterX());
             int y = (int) (100 * random.nextGaussian() + city.getCenterY());

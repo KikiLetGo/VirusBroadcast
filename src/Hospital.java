@@ -41,10 +41,10 @@ public class Hospital {
     private List<Bed> beds = new ArrayList<>();
 
     private Hospital() {
-        if (Constants.BED_COUNT == 0) {
-            width = 0;
-            height = 0;
-        }
+        // if (Constants.BED_COUNT == 0) {
+        //     width = 0;
+        //     height = 0;
+        // }
         int column = Constants.BED_COUNT / 100;
         width = column * 6;
 
