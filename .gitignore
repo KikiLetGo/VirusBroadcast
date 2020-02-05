@@ -1,3 +1,10 @@
+# IDEA
 .idea/
 *.iml
 out/
+
+# Eclipse (VS Code)
+bin/
+.settings/
+.classpath
+.project
