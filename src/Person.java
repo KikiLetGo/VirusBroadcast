@@ -12,15 +12,15 @@ public class Person {
     private int x;
     private int y;
     private MoveTarget moveTarget;
-    int sig = 1;
+    int sig = 1;//移动意愿的正态分布方差sigma
+
+    //正态分布相关参数N(mu,sigma)
+    double targetXU;//x方向的均值mu
+    double targetYU;//y方向的均值mu
+    double targetSig = 50;//方差sigma
 
 
-    double targetXU;
-    double targetYU;
-    double targetSig = 50;
-
-
-    public interface State {//市民状态
+    public interface State {//市民状态，建议后来的大佬将其改成枚举类型
         int NORMAL = 0;//未被感染
         int SHADOW = NORMAL + 1;//潜伏者
 
@@ -32,12 +32,18 @@ public class Person {
         this.city = city;
         this.x = x;
         this.y = y;
+        //对市民的初始位置进行N(x,100)的正态分布随机
         targetXU = 100 * new Random().nextGaussian() + x;
         targetYU = 100 * new Random().nextGaussian() + y;
 
     }
 
+    /**
+     * 根据想要移动的意愿的平均值来进行正态分布计算
+     * @return 是否想要移动
+     */
     public boolean wantMove() {
+    	//产生N(a,b)的数：Math.sqrt(b)*random.nextGaussian()+a
         double value = sig * new Random().nextGaussian() + Constants.u;
         return value > 0;
     }
@@ -93,15 +99,20 @@ public class Person {
         this.y += y;
     }
 
+    /**
+     * 处理未隔离者的移动问题
+     * 
+     */
     private void action() {
         if (state == State.FREEZE) {
-            return;
+            return;//如果处于隔离状态，则无法行动
         }
         if (!wantMove()) {
             return;
         }
         if (moveTarget == null || moveTarget.isArrived()) {
-
+        	//在想要移动并且没有目标时，将自身移动目标设置为随机生成的符合正态分布的目标点
+        	//产生N(a,b)的数：Math.sqrt(b)*random.nextGaussian()+a
             double targetX = targetSig * new Random().nextGaussian() + targetXU;
             double targetY = targetSig * new Random().nextGaussian() + targetYU;
             moveTarget = new MoveTarget((int) targetX, (int) targetY);
@@ -111,21 +122,22 @@ public class Person {
 
         int dX = moveTarget.getX() - x;
         int dY = moveTarget.getY() - y;
-        double length = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+        double length = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));//与目标点的距离
 
         if (length < 1) {
+        	//判断是否到达目标点
             moveTarget.setArrived(true);
             return;
         }
-        int udX = (int) (dX / length);
+        int udX = (int) (dX / length);//符号为沿x轴前进方向
         if (udX == 0 && dX != 0) {
             if (dX > 0) {
-                udX = 1;
+                udX = 1;//TODO:移动步长为1，如果要调整移动步长可以看一下这里
             } else {
                 udX = -1;
             }
         }
-        int udY = (int) (dY / length);
+        int udY = (int) (dY / length);//符号为沿y轴前进方向
         if (udY == 0 && udY != 0) {
             if (dY > 0) {
                 udY = 1;
@@ -135,6 +147,8 @@ public class Person {
         }
 
         if (x > 700) {
+        	//这个700也许是x方向边界的意思，因为画布大小1000x800
+        	//TODO:如果是边界那么似乎边界判断还差一个y方向        	
             moveTarget = null;
             if (udX > 0) {
                 udX = -udX;
@@ -148,14 +162,19 @@ public class Person {
 
     }
 
-    private float SAFE_DIST = 2f;
+    private float SAFE_DIST = 2f;//安全距离
 
+    /**
+     * 对各种状态的人进行不同的处理
+     */
     public void update() {
         //TODO:找时间改为状态机
         if (state >= State.FREEZE) {
-            return;
+            return;//如果已经隔离了，就不需要处理了，此状态目前为数值最大的状态
         }
+        //处理已经确诊的感染者（即患者）
         if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
+        	//如果患者已经确诊，且（世界时刻-确诊时刻）大于医院响应时间，即医院准备好病床了，可以抬走了
             Bed bed = Hospital.getInstance().pickBed();//查找空床位
             if (bed == null) {
                 //没有床位了
@@ -168,13 +187,14 @@ public class Person {
                 bed.setEmpty(false);
             }
         }
+        //处理发病的潜伏期感染者
         if (MyPanel.worldTime - infectedTime > Constants.SHADOW_TIME && state == State.SHADOW) {
             state = State.CONFIRMED;//潜伏者发病
             confirmedTime = MyPanel.worldTime;//刷新时间
         }
-
+        //处理未隔离者的移动问题
         action();
-
+        //处理健康人被感染的问题
         List<Person> people = PersonPool.getInstance().personList;
         if (state >= State.SHADOW) {
             return;

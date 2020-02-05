@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Hospital {
 
-
+	//医院矩形所在坐标
     private int x = 800;
     private int y = 110;
 
@@ -39,17 +39,18 @@ public class Hospital {
         return hospital;
     }
 
-    private Point point = new Point(800, 100);
+    private Point point = new Point(800, 100);//第一个床位所在坐标，用于给其他床位定绝对坐标
     private List<Bed> beds = new ArrayList<>();
 
     private Hospital() {
+    	//根据床位数量调整医院矩形的大小
         if (Constants.BED_COUNT == 0) {
             width = 0;
             height = 0;
         }
         int column = Constants.BED_COUNT / 100;
         width = column * 6;
-
+        //根据第一个床位坐标初始化其他床位的坐标
         for (int i = 0; i < column; i++) {
 
             for (int j = 10; j <= 610; j += 6) {
@@ -61,6 +62,10 @@ public class Hospital {
         }
     }
 
+    /**
+     * 获取下一个空床位
+     * @return 下一个空床位
+     */
     public Bed pickBed() {
         for (Bed bed : beds) {
             if (bed.isEmpty()) {

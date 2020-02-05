@@ -23,7 +23,7 @@ public class Main {
         frame.setVisible(true);
         frame.setTitle("瘟疫传播模拟");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        panelThread.start();
+        panelThread.start();//开启画布线程，即世界线程，接着看代码的下一站可以转MyPanel.java
     }
 
     /**
