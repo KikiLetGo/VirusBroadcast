@@ -26,6 +26,7 @@ public class MyPanel extends JPanel implements Runnable {
         // 绘制医院边界
         g.drawRect(Hospital.getInstance().getX(), Hospital.getInstance().getY(), Hospital.getInstance().getWidth(),
                 Hospital.getInstance().getHeight());
+        g.setFont(new Font("等线", Font.BOLD, 16));
         g.setColor(new Color(0x00ff00));
         g.drawString("医院", Hospital.getInstance().getX() + Hospital.getInstance().getWidth() / 4,
                 Hospital.getInstance().getY() - 16);
@@ -71,9 +72,9 @@ public class MyPanel extends JPanel implements Runnable {
         g.setColor(new Color(0xdddddd));
         g.drawString("健康者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.NORMAL), 16, 64);
         g.setColor(new Color(0xffee00));
-        g.drawString("潜伏者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.SHADOW), 16, 88);
+        g.drawString("携带者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.SHADOW), 16, 88);
         g.setColor(new Color(0xff0000));
-        g.drawString("感染者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED), 16, 112);
+        g.drawString("患者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED), 16, 112);
         g.setColor(new Color(0x48FFFC));
         g.drawString("已隔离人数：" + PersonPool.getInstance().getPeopleSize(Person.State.FREEZE), 16, 136);
         g.setColor(new Color(0x00ff00));
