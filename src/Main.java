@@ -3,10 +3,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Main {
-
-
-
-
+    
     public static void main(String[] args) {
         MyPanel p = new MyPanel();
         Thread panelThread = new Thread(p);
@@ -19,18 +16,17 @@ public class Main {
         panelThread.start();
 
         List<Person> people = PersonPool.getInstance().getPersonList();
-        for(int i=0;i<Constants.ORIGINAL_COUNT;i++){
-            int index = new Random().nextInt(people.size()-1);
+        for (int i = 0; i < Constants.ORIGINAL_COUNT; i++) {
+            int index = new Random().nextInt(people.size() - 1);
             Person person = people.get(index);
 
-            while (person.isInfected()){
-                index = new Random().nextInt(people.size()-1);
+            while (person.isInfected()) {
+                index = new Random().nextInt(people.size() - 1);
                 person = people.get(index);
             }
             person.beInfected();
 
         }
-
 
     }
 }
