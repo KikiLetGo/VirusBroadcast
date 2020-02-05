@@ -1,6 +1,6 @@
 # Virus Model Simulator
 
-# Introduction
+## Introduction
 
 A simulator created by Bruce Yong to simulate spread of 2019-nCov 
 and tell everyone on BiliBili why it's safer to stay home while the coronavirus breaks out.  
