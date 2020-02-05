@@ -1,3 +1,5 @@
+package virussim;
+
 /**
  * @ClassName: Virus
  * @Description: TODO

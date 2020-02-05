@@ -1,3 +1,5 @@
+package virussim;
+
 /**
  * @ClassName: Bed
  * @Description: TODO

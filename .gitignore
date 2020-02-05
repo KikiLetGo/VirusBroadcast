@@ -2,6 +2,8 @@
 .idea/
 *.iml
 out/
+*.ipr
+*.iws
 
 # VS Code, Eclipse
 bin/

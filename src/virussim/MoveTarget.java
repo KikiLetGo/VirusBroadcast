@@ -1,14 +1,17 @@
+package virussim;
+
 /**
- * @ClassName: Point
+ * @ClassName: MoveTarget
  * @Description: TODO
  * @author: Bruce Young
- * @date: 2020年02月02日 20:59
+ * @date: 2020年02月02日 17:47
  */
-public class Point {
+public class MoveTarget {
     private int x;
     private int y;
+    private boolean arrived = false;
 
-    public Point(int x, int y) {
+    public MoveTarget(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -27,5 +30,13 @@ public class Point {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean isArrived() {
+        return arrived;
+    }
+
+    public void setArrived(boolean arrived) {
+        this.arrived = arrived;
     }
 }
