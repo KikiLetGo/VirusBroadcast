@@ -70,7 +70,7 @@ public class MyPanel extends JPanel implements Runnable {
 
         // 显示数据信息
         g.setColor(Color.WHITE);
-        g.drawString("城市总人数：" + Constants.population, 16, 40);
+        g.drawString("城市总人数：" + Constants.POPULATION, 16, 40);
         g.setColor(new Color(0xdddddd));
         g.drawString("健康者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.NORMAL), 16, 64);
         g.setColor(new Color(0xffee00));

@@ -30,6 +30,11 @@ public class Person {
     //     int CURED = FREEZE + 1;
     // }
 
+    /**
+     * The {@code State} enum is an alternative of the previous {@code State} interface
+     * 
+     * @author dy55
+     */
     public enum State {
         NORMAL, SUSPECTED, SHADOW, CONFIRMED, FREEZE, CURED;
 
@@ -110,9 +115,9 @@ public class Person {
         return Math.sqrt(Math.pow(x - person.getX(), 2) + Math.pow(y - person.getY(), 2));
     }
 
-     private void freezy() {
-         state = State.FREEZE;
-     }
+    private void freezy() {
+        state = State.FREEZE;
+    }
 
     private void moveTo(int x, int y) {
         this.x += x;
@@ -172,8 +177,6 @@ public class Person {
 
     }
 
-    private float SAFE_DIST = 2f;
-
     public void update() {
         if (state.ge(State.FREEZE)) {
             return;
@@ -183,10 +186,11 @@ public class Person {
             if (bed == null) {
                 // 没有床位
                 // System.out.println("隔离区没有空床位");
-                Main.HOSPITAL_STATE.setText("隔离区没有空床位");
+                if (Main.HOSPITAL_STATE.getText().isEmpty()) {
+                    Main.HOSPITAL_STATE.setText("隔离区没有空床位");
+                }
             } else {
                 // 安置病人
-                Main.HOSPITAL_STATE.setText("");
                 state = State.FREEZE;
                 x = bed.getX();
                 y = bed.getY();
@@ -209,7 +213,7 @@ public class Person {
                 continue;
             }
             float random = new Random().nextFloat();
-            if (random < Constants.BROAD_RATE && distance(person) < SAFE_DIST) {
+            if (random < Constants.BROAD_RATE && distance(person) < Constants.SAFE_DIST) {
                 this.beInfected();
             }
         }

@@ -8,12 +8,10 @@ import java.util.Random;
 
 public class Main {
     
-    public static final JLabel HOSPITAL_STATE = new JLabel();
+    public static final JLabel HOSPITAL_STATE = new JLabel("");
 
     public static void main(String[] args) {
-        if (args.length > 0) {
-            // TODO
-        }
+        // TODO 命令行界面
 
         initPanel();
         initInfected();

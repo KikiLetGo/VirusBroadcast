@@ -29,7 +29,7 @@ public class PersonPool {
      */
     public int getPeopleSize(Person.State state) {
         if (state == null) {
-            return Constants.population;
+            return Constants.POPULATION;
         }
         int i = 0;
         for (Person person : personList) {
@@ -41,12 +41,12 @@ public class PersonPool {
     }
 
     public int getPeopleSize() {
-        return Constants.population;
+        return Constants.POPULATION;
     }
 
     private PersonPool() {
         City city = new City(400, 400);
-        for (int i = 0; i < Constants.population; i++) {
+        for (int i = 0; i < Constants.POPULATION; i++) {
             Random random = new Random();
             int x = (int) (100 * random.nextGaussian() + city.getCenterX());
             int y = (int) (100 * random.nextGaussian() + city.getCenterY());
