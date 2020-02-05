@@ -1,4 +1,4 @@
-# 瘟疫传播模拟程序 Pleague Spread Simulation Program
+# 瘟疫传播模拟程序 Plague Spread Simulation Program
 
 ## 简介 Introduction
 
