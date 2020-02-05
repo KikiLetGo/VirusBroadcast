@@ -1,9 +1,9 @@
-# IDEA
+# IntelliJ IDEA
 .idea/
 *.iml
 out/
 
-# Eclipse (VS Code)
+# VS Code, Eclipse
 bin/
 .settings/
 .classpath
