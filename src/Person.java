@@ -108,9 +108,9 @@ public class Person {
         return Math.sqrt(Math.pow(x - person.getX(), 2) + Math.pow(y - person.getY(), 2));
     }
 
-    // private void freezy() {
-    //     state = State.FREEZE;
-    // }
+     private void freezy() {
+         state = State.FREEZE;
+     }
 
     private void moveTo(int x, int y) {
         this.x += x;
@@ -179,10 +179,12 @@ public class Person {
         if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
             Bed bed = Hospital.getInstance().pickBed();
             if (bed == null) {
+                // 没有床位
                 // System.out.println("隔离区没有空床位");
-                Main.hospitalState.setText("隔离区没有空床位");
+                Main.HOSPITAL_STATE.setText("隔离区没有空床位");
             } else {
-                Main.hospitalState.setText("");
+                // 安置病人
+                Main.HOSPITAL_STATE.setText("");
                 state = State.FREEZE;
                 x = bed.getX();
                 y = bed.getY();

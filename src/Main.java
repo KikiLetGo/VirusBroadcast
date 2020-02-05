@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Main {
     
-    public static final JLabel hospitalState = new JLabel();
+    public static final JLabel HOSPITAL_STATE = new JLabel();
 
     public static void main(String[] args) {
         initPanel();
@@ -22,8 +22,8 @@ public class Main {
         JFrame frame = new JFrame();
         JPanel statePanel = new JPanel();
         statePanel.setBackground(null);
-        hospitalState.setForeground(Color.RED);
-        statePanel.add(Main.hospitalState);
+        HOSPITAL_STATE.setForeground(Color.RED);
+        statePanel.add(Main.HOSPITAL_STATE);
 
         p.add(statePanel);
         frame.add(p);
@@ -40,7 +40,8 @@ public class Main {
      * 初始化初始感染者
      */
     private static void initInfected() {
-        List<Person> people = PersonPool.getInstance().getPersonList();// 获取所有的市民
+        // 获取所有的市民
+        List<Person> people = PersonPool.getInstance().getPersonList();
         for (int i = 0; i < Constants.ORIGINAL_COUNT; i++) {
             Person person;
             do {
