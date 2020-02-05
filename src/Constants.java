@@ -6,7 +6,7 @@
  */
 public class Constants {
 
-    public static final int ORIGINAL_COUNT = 1;    // 初始感染数量
+    public static final int ORIGINAL_COUNT = 10;    // 初始感染数量
     public static final float BROAD_RATE = 0.8f;    // 传播率
     public static final float SHADOW_TIME = 70;    // 潜伏时间
     public static final int HOSPITAL_RECEIVE_TIME = 10; // 医院收治响应时间
