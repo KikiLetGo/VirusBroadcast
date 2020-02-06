@@ -27,7 +27,9 @@ public class Person {
     double targetSig = 50;
 
     /**
-     * 人的状态
+     * 市民的状态
+     *
+     * 市民状态应该需要细分，虽然有的状态暂未纳入模拟，但是细分状态应该保留
      */
     public interface State {
         int NORMAL = 0;//正常人，未感染的健康人
