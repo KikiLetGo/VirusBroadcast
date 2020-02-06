@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName: Person
@@ -20,12 +21,15 @@ public class Person {
     double targetSig = 50;
 
 
-    public interface State {//市民状态
-        int NORMAL = 0;//未被感染
-        int SHADOW = NORMAL + 1;//潜伏者
+    public interface State {
+        int NORMAL = 0;           //正常
+        int SUSPECTED = NORMAL + 1; //疑似
+        int SHADOW = SUSPECTED + 1; //带病
 
-        int CONFIRMED = SHADOW + 1;//感染者
-        int FREEZE = CONFIRMED + 1;//已隔离
+        int CONFIRMED = SHADOW + 1; //确诊
+        int FREEZE = CONFIRMED + 1; //隔离
+        int CURED = -1;     //治愈
+        int DEAD = -2;   //死亡
     }
 
     public Person(City city, int x, int y) {
@@ -38,7 +42,9 @@ public class Person {
     }
 
     public boolean wantMove() {
-        double value = sig * new Random().nextGaussian() + Constants.u;
+        double value = 0;
+        value = sig * new Random().nextGaussian() + Constants.uStart;
+        if (value < 0) value = -1;
         return value > 0;
     }
 
@@ -151,36 +157,74 @@ public class Person {
     private float SAFE_DIST = 2f;
 
     public void update() {
-        //TODO:找时间改为状态机
-        if (state >= State.FREEZE) {
-            return;
-        }
-        if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
-            Bed bed = Hospital.getInstance().pickBed();//查找空床位
-            if (bed == null) {
-                //没有床位了
-//                System.out.println("隔离区没有空床位");
+        List<Person> people = PersonPool.getInstance().personList;
+        //@TODO找时间改为状态机
+        if ((state == State.FREEZE) && MyPanel.worldTime - confirmedTime >= Constants.CURE_TIME) {
+            //已隔离的，平均治愈时间已过，按照死亡率区分
+            List<Bed> beds = Hospital.getInstance().getBeds();
+//            Bed bed = Hospital.getInstance().getUsedBed();
+//            if (bed!= null) {
+//                //bed.setEmpty(true);
+//            }
+            Bed bed = beds.stream().filter(a->a.getX()==x&&a.getY()==y).collect(Collectors.toList()).get(0);
+            bed.setEmpty(true);
+            double num = Math.random() * 1.0;
+            if (num > Constants.MORTALITY) {
+                //治愈
+                state = State.CURED; //治愈
+                Constants.cureNum++;
             } else {
-                //安置病人
+                //死亡
+                state = State.DEAD; //死亡
+                Constants.PERSON_NUM -= 1;
+                Constants.deadNum++;
+            }
+            Random random = new Random();
+            x = (int) (100 * random.nextGaussian() + city.getCenterX());
+            y = (int) (100 * random.nextGaussian() + city.getCenterY());
+            //System.out.println("x"+x+"y"+y);
+        }
+
+        if ((state == State.CONFIRMED) && MyPanel.worldTime - confirmedTime >= Constants.CURE_TIME) {
+            //未隔离  但是已痊愈或死亡
+            //平均治愈时间已过，按照死亡率区分
+            double num = Math.random() * 1.0;
+            if (num > Constants.MORTALITYNoBed) {
+                //治愈
+                state = State.CURED; //治愈
+                Constants.cureNum++;
+            } else {
+                //死亡
+                state = State.DEAD; //死亡
+                Constants.PERSON_NUM -= 1;
+                Constants.deadNum++;
+            }
+        }
+
+        if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
+            Bed bed = Hospital.getInstance().pickBed();
+            if (bed == null) {
+                //System.out.println("隔离区没有空床位");
+            } else {
                 state = State.FREEZE;
+                //bed.setEmpty(false);
                 x = bed.getX();
                 y = bed.getY();
-                bed.setEmpty(false);
+                System.out.println("x"+x+"y"+y);
+
             }
         }
         if (MyPanel.worldTime - infectedTime > Constants.SHADOW_TIME && state == State.SHADOW) {
-            state = State.CONFIRMED;//潜伏者发病
-            confirmedTime = MyPanel.worldTime;//刷新时间
+            state = State.CONFIRMED;
+            confirmedTime = MyPanel.worldTime;
         }
-
         action();
 
-        List<Person> people = PersonPool.getInstance().personList;
-        if (state >= State.SHADOW) {
+        if (state >= State.SHADOW || state < State.NORMAL) {
             return;
         }
         for (Person person : people) {
-            if (person.getState() == State.NORMAL) {
+            if (person.getState() == State.NORMAL || person.getState() == State.CURED || person.getState() == State.DEAD) {
                 continue;
             }
             float random = new Random().nextFloat();
