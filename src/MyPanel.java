@@ -35,7 +35,7 @@ public class MyPanel extends JPanel implements Runnable {
         g.drawString("医院", Hospital.getInstance().getX() + Hospital.getInstance().getWidth() / 4, Hospital.getInstance().getY() - 16);
 
         List<Person> people = PersonPool.getInstance().getPersonList();
-        if(people==null){
+        if (people == null) {
             return;
         }
         people.get(pIndex).update();
@@ -79,8 +79,10 @@ public class MyPanel extends JPanel implements Runnable {
         g.drawString("已隔离人数：" + PersonPool.getInstance().getPeopleSize(Person.State.FREEZE), 16, 136);
         g.setColor(new Color(0x00ff00));
         g.drawString("空余病床：" + (Constants.BED_COUNT - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE)), 16, 160);
+        g.setColor(new Color(0xE39476));
+        g.drawString("急需病床：" + Hospital.getInstance().needBeds(), 16, 184);
         g.setColor(new Color(0xCFE3C0));
-        g.drawString("病毒扩散时间：" + worldTime + " 单位", 16, 184);
+        g.drawString("病毒扩散时间：" + worldTime + " 单位", 16, 208);
     }
 
     public static int worldTime = 0;

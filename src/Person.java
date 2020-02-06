@@ -44,7 +44,7 @@ public class Person extends Point {
         this.city = city;
         //生成随机移动均值x-mu、y-mu，
         targetXU = MathUtil.stdGaussian(100, x);
-        targetYU =  MathUtil.stdGaussian(100, y);
+        targetYU = MathUtil.stdGaussian(100, y);
 
     }
 
@@ -111,7 +111,7 @@ public class Person extends Point {
         //存在流动意愿的，将进行流动，流动位移仍然遵循标准正态分布
         if (moveTarget == null || moveTarget.isArrived()) {
             double targetX = MathUtil.stdGaussian(targetSig, targetXU);
-            double targetY =  MathUtil.stdGaussian(targetSig, targetYU);
+            double targetY = MathUtil.stdGaussian(targetSig, targetYU);
             moveTarget = new MoveTarget((int) targetX, (int) targetY);
 
         }
@@ -151,11 +151,6 @@ public class Person extends Point {
             }
         }
         moveTo(udX, udY);
-
-//        if(wantMove()){
-//        }
-
-
     }
 
     private float SAFE_DIST = 2f;
@@ -173,7 +168,8 @@ public class Person extends Point {
                 && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
             Bed bed = Hospital.getInstance().pickBed();//查找空床位
             if (bed == null) {
-                //没有床位了
+                //没有床位了，报告需求床位数
+                Hospital.getInstance().increaseNeedBeds();
 //                System.out.println("隔离区没有空床位");
             } else {
                 //安置病人
@@ -184,7 +180,7 @@ public class Person extends Point {
             }
         }
         //增加一个正态分布用于潜伏期内随机发病时间
-        double stdRnShadowtime = MathUtil.stdGaussian(25,  Constants.SHADOW_TIME / 2);
+        double stdRnShadowtime = MathUtil.stdGaussian(25, Constants.SHADOW_TIME / 2);
         if (MyPanel.worldTime - infectedTime > stdRnShadowtime && state == State.SHADOW) {
             state = State.CONFIRMED;//潜伏者发病
             confirmedTime = MyPanel.worldTime;//刷新时间

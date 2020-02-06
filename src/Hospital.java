@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 医院
@@ -45,6 +46,20 @@ public class Hospital {
 
     private Point point = new Point(800, 100);
     private List<Bed> beds = new ArrayList<>();
+
+    private AtomicInteger needBedsCount = new AtomicInteger();
+
+    public int increaseNeedBeds(){
+        return needBedsCount.incrementAndGet();
+    }
+
+    public int decreaseNeedBeds(){
+        return needBedsCount.decrementAndGet();
+    }
+
+    public int needBeds(){
+        return needBedsCount.get();
+    }
 
     private Hospital() {
         if (Constants.BED_COUNT == 0) {

@@ -19,7 +19,7 @@ public class Constants {
      * -0.99可达到人群最快速率，甚至完全控制疫情传播
      * 0.99为人群流动最快速率, 可导致全城感染
      */
-    public static float u = -0.99f;
+    public static float u = 0.99f;
     public static int CITY_PERSON_SIZE = 5000;//城市总人口数量
 
 }
