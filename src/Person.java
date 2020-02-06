@@ -20,7 +20,6 @@ public class Person extends Point {
     int sig = 1;
 
     /**
-
      * 正态分布N(mu,sigma)随机位移目标位置
      */
 
@@ -42,21 +41,21 @@ public class Person extends Point {
 
         //已治愈出院的人转为NORMAL即可，否则会与作者通过数值大小判断状态的代码冲突
         int DEATH = FREEZE + 1;//病死者
-        
+
     }
 
     public Person(City city, int x, int y) {
         super(x, y);
         this.city = city;
-        this.x = x;
-        this.y = y;
         //对市民的初始位置进行N(x,100)的正态分布随机
-        targetXU = 100 * new Random().nextGaussian() + x;
-        targetYU = 100 * new Random().nextGaussian() + y;
+        targetXU = MathUtil.stdGaussian(100, x);
+        targetYU = MathUtil.stdGaussian(100, y);
+
     }
 
     /**
      * 流动意愿标准化
+     *
      * 根据标准正态分布生成随机人口流动意愿
      * <p>
      * 流动意愿标准化后判断是在0的左边还是右边从而决定是否流动。
@@ -115,7 +114,7 @@ public class Person extends Point {
         state = State.FREEZE;
     }
 
-
+    /**
      * 不同状态下的单个人实例运动行为
      */
     private void action() {
@@ -128,10 +127,11 @@ public class Person extends Point {
         }
         //存在流动意愿的，将进行流动，流动位移仍然遵循标准正态分布
         if (moveTarget == null || moveTarget.isArrived()) {
-   	        //在想要移动并且没有目标时，将自身移动目标设置为随机生成的符合正态分布的目标点
+            //在想要移动并且没有目标时，将自身移动目标设置为随机生成的符合正态分布的目标点
             //产生N(a,b)的数：Math.sqrt(b)*random.nextGaussian()+a
             double targetX = MathUtil.stdGaussian(targetSig, targetXU);
-            double targetY = MathUtil.stdGaussian(targetSig, targetYU);            moveTarget = new MoveTarget((int) targetX, (int) targetY);
+            double targetY = MathUtil.stdGaussian(targetSig, targetYU);
+            moveTarget = new MoveTarget((int) targetX, (int) targetY);
 
         }
 
@@ -142,7 +142,7 @@ public class Person extends Point {
         double length = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));//与目标点的距离
 
         if (length < 1) {
-        	//判断是否到达目标点
+            //判断是否到达目标点
             moveTarget.setArrived(true);
             return;
         }
@@ -169,8 +169,8 @@ public class Person extends Point {
 
 
         if (getX() > 700) {
-        	//这个700也许是x方向边界的意思，因为画布大小1000x800
-        	//TODO:如果是边界那么似乎边界判断还差一个y方向        	
+            //这个700也许是x方向边界的意思，因为画布大小1000x800
+            //TODO:如果是边界那么似乎边界判断还差一个y方向
             moveTarget = null;
             if (udX > 0) {
                 udX = -udX;
@@ -183,35 +183,35 @@ public class Person extends Point {
 
     private float SAFE_DIST = 2f;//安全距离
 
-     /**
+    /**
      * 对各种状态的人进行不同的处理，更新发布市民健康状态
-     */    public void update() {
+     */
+    public void update() {
         //@TODO找时间改为状态机
 
         if (state == State.FREEZE || state == State.DEATH) {
             return;//如果已经隔离或者死亡了，就不需要处理了
         }
+
         //处理已经确诊的感染者（即患者）
-        //
         if (state == State.CONFIRMED && dieMoment == 0) {
-        	int destiny = new Random().nextInt(10000)+1;//命运数字，[1,10000]随机数
-        	if (1 <= destiny && destiny <= (int)(Constants.FATALITY_RATE * 10000)) {
-        		//如果命运数字落在死亡区间
-        		int dieTime = (int) (Constants.DIE_VARIANCE * new Random().nextGaussian()+Constants.DIE_TIME);
-            	dieMoment = confirmedTime + dieTime;//发病后确定死亡时刻
-            	//System.out.printf("%d,%f,%d\n",destiny,Constants.FATALITY_RATE * 10000,dieTime);
-        	}
-        	else {
-        		dieMoment = -1;//逃过了死神的魔爪
-        	}
-        	
+
+            int destiny = new Random().nextInt(10000) + 1;//幸运数字，[1,10000]随机数
+            if (1 <= destiny && destiny <= (int) (Constants.FATALITY_RATE * 10000)) {
+
+                //如果幸运数字落在死亡区间
+                int dieTime = (int) (Constants.DIE_VARIANCE * new Random().nextGaussian() + Constants.DIE_TIME);
+                dieMoment = confirmedTime + dieTime;//发病后确定死亡时刻
+            } else {
+                dieMoment = -1;//逃过了死神的魔爪
+            }
         }
-        //*/
+
 
 
         if (state == State.CONFIRMED
                 && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
-        	//如果患者已经确诊，且（世界时刻-确诊时刻）大于医院响应时间，即医院准备好病床了，可以抬走了
+            //如果患者已经确诊，且（世界时刻-确诊时刻）大于医院响应时间，即医院准备好病床了，可以抬走了
             Bed bed = Hospital.getInstance().pickBed();//查找空床位
             if (bed == null) {
 
@@ -226,19 +226,17 @@ public class Person extends Point {
                 bed.setEmpty(false);
             }
         }
-        if (MyPanel.worldTime - infectedTime > Constants.SHADOW_TIME && state == State.SHADOW) {
-
 
         //处理病死者
-        if((state == State.CONFIRMED || state == State.FREEZE ) && MyPanel.worldTime >= dieMoment && dieMoment > 0) {
-        	state = State.DEATH;//患者死亡
+        if ((state == State.CONFIRMED || state == State.FREEZE) && MyPanel.worldTime >= dieMoment && dieMoment > 0) {
+            state = State.DEATH;//患者死亡
         }
 
         //增加一个正态分布用于潜伏期内随机发病时间
         double stdRnShadowtime = MathUtil.stdGaussian(25, Constants.SHADOW_TIME / 2);
-
         //处理发病的潜伏期感染者
-        if (MyPanel.worldTime - infectedTime > stdRnShadowtime && state == State.SHADOW) {            state = State.CONFIRMED;//潜伏者发病
+        if (MyPanel.worldTime - infectedTime > stdRnShadowtime && state == State.SHADOW) {
+            state = State.CONFIRMED;//潜伏者发病
             confirmedTime = MyPanel.worldTime;//刷新时间
         }
         //处理未隔离者的移动问题
