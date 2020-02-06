@@ -4,6 +4,8 @@
 out/
 *.ipr
 *.iws
+# JAR Output
+src/META-IMF/
 
 # VS Code, Eclipse
 bin/
