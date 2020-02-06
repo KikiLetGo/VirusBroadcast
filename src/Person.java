@@ -268,6 +268,7 @@ public class Person {
             float random = new Random().nextFloat();
             if (random < Constants.BROAD_RATE && distance(person) < SAFE_DIST) {
                 this.beInfected();
+                break;
             }
         }
     }
