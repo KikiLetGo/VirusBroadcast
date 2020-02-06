@@ -57,6 +57,7 @@ public class Hospital {
         width = column * 6;
 
         for (int i = 0; i < column; i++) {
+
             for (int j = 10; j <= 610; j += 6) {
                 Bed bed = new Bed(point.getX() + i * 6, point.getY() + j);
                 beds.add(bed);

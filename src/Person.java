@@ -33,7 +33,7 @@ public class Person {
         int NORMAL = 0;//正常人，未感染的健康人
         int SUSPECTED = NORMAL + 1;//有暴露感染风险
         int SHADOW = SUSPECTED + 1;//潜伏期
-        int CONFIRMED = SHADOW + 1;//已确诊为感染病人
+        int CONFIRMED = SHADOW + 1;//发病且已确诊为感染病人
         int FREEZE = CONFIRMED + 1;//隔离治疗，禁止位移
         int CURED = FREEZE + 1;//已治愈出院
     }
@@ -202,11 +202,14 @@ public class Person {
         if (state >= State.FREEZE) {
             return;
         }
+
         if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
-            Bed bed = Hospital.getInstance().pickBed();
+            Bed bed = Hospital.getInstance().pickBed();//查找空床位
             if (bed == null) {
-                System.out.println("隔离区没有空床位");
+                //没有床位了
+//                System.out.println("隔离区没有空床位");
             } else {
+                //安置病人
                 state = State.FREEZE;
                 x = bed.getX();
                 y = bed.getY();
@@ -214,8 +217,8 @@ public class Person {
             }
         }
         if (MyPanel.worldTime - infectedTime > Constants.SHADOW_TIME && state == State.SHADOW) {
-            state = State.CONFIRMED;
-            confirmedTime = MyPanel.worldTime;
+            state = State.CONFIRMED;//潜伏者发病
+            confirmedTime = MyPanel.worldTime;//刷新时间
         }
 
         action();
