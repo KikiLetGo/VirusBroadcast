@@ -62,6 +62,7 @@ public class Hospital extends Point {
         for (int i = 0; i < column; i++) {
 
             for (int j = 10; j <= 606; j += 6) {
+
                 Bed bed = new Bed(point.getX() + i * 6, point.getY() + j);
                 beds.add(bed);
                 if (beds.size() >= Constants.BED_COUNT) {//确定医院床位承载数量
