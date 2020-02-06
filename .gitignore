@@ -4,6 +4,7 @@
 out/
 *.ipr
 *.iws
+*.eml
 # JAR Output
 src/META-IMF/
 
