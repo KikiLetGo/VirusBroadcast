@@ -97,7 +97,7 @@ public class MyPanel extends JPanel implements Runnable {
         g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), captionStartOffsetX, captionStartOffsetY + 7 * captionSize);
         g.setColor(new Color(0xffffff));
         g.drawString("世界时间（天）：" + (int) (worldTime / 10.0), captionStartOffsetX, captionStartOffsetY + 8 * captionSize);
-        ;
+
     }
 
 
