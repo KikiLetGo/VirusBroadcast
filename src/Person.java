@@ -249,6 +249,7 @@ public class Person extends Point {
         if (state >= State.SHADOW) {
             return;
         }
+        //通过一个随机幸运值和安全距离决定感染其他人
         for (Person person : people) {
             if (person.getState() == State.NORMAL) {
                 continue;
