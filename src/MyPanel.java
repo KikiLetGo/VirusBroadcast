@@ -40,7 +40,7 @@ public class MyPanel extends JPanel implements Runnable {
         people.get(pIndex).update();
         for (Person person : people) {
             switch (person.getState()) {
-                case Person.State.NORMAL:{
+                case Person.State.NORMAL: {
                     //健康人
                     g.setColor(new Color(0xdddddd));
                     break;
@@ -57,6 +57,11 @@ public class MyPanel extends JPanel implements Runnable {
                 case Person.State.FREEZE: {
                     //已隔离者
                     g.setColor(new Color(0x48FFFC));
+                    break;
+                }
+                case Person.State.DEATH: {
+                    //死亡患者
+                    g.setColor(new Color(0x000000));
                     break;
                 }
             }

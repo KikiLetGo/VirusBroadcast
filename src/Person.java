@@ -232,7 +232,7 @@ public class Person extends Point {
         //处理病死者
         if ((state == State.CONFIRMED || state == State.FREEZE) && MyPanel.worldTime >= dieMoment && dieMoment > 0) {
             state = State.DEATH;//患者死亡
-            Hospital.getInstance().returnBed(useBed);
+            Hospital.getInstance().returnBed(useBed);//归还床位
         }
 
         //增加一个正态分布用于潜伏期内随机发病时间
