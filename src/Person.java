@@ -55,7 +55,7 @@ public class Person extends Point {
 
     /**
      * 流动意愿标准化
-     *
+     * <p>
      * 根据标准正态分布生成随机人口流动意愿
      * <p>
      * 流动意愿标准化后判断是在0的左边还是右边从而决定是否流动。
@@ -201,7 +201,7 @@ public class Person extends Point {
             if (1 <= destiny && destiny <= (int) (Constants.FATALITY_RATE * 10000)) {
 
                 //如果幸运数字落在死亡区间
-                int dieTime = (int) (Constants.DIE_VARIANCE * new Random().nextGaussian() + Constants.DIE_TIME);
+                int dieTime = (int) MathUtil.stdGaussian(Constants.DIE_VARIANCE, Constants.DIE_TIME);
                 dieMoment = confirmedTime + dieTime;//发病后确定死亡时刻
             } else {
                 dieMoment = -1;//逃过了死神的魔爪
