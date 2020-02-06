@@ -5,14 +5,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * 主面板。
+ *
  * @ClassName: MyPanel
- * @Description: TODO
+ * @Description: 主面板
  * @author: Bruce Young
  * @date: 2020年02月02日 17:03
  */
 public class MyPanel extends JPanel implements Runnable {
 
     private int pIndex = 0;//人口池PersonPool的下标，用于遍历每个人
+
 
     public MyPanel() {
         super();
@@ -31,7 +34,7 @@ public class MyPanel extends JPanel implements Runnable {
         g.drawString("医院", Hospital.getInstance().getX() + Hospital.getInstance().getWidth() / 4, Hospital.getInstance().getY() - 16);
         //绘制代表人类的圆点
         List<Person> people = PersonPool.getInstance().getPersonList();
-        if (people == null) {
+        if(people==null){
             return;
         }
         people.get(pIndex).update();
@@ -83,7 +86,9 @@ public class MyPanel extends JPanel implements Runnable {
         g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), 16, 184);
         g.setColor(new Color(0xffffff));
         g.drawString("世界时间（天）：" + (int)(worldTime/10.0), 16, 208);
-        
+
+        g.setColor(new Color(0xCFE3C0));
+        g.drawString("病毒扩散时间：" + worldTime + " 单位", 16, 232);
     }
 
     public static int worldTime = 0;//世界时间

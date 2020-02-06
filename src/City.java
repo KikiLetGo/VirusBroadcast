@@ -1,6 +1,8 @@
 /**
+ * 城市描述对象
+ *
  * @ClassName: City
- * @Description: TODO
+ * @Description: 城市描述对象
  * @author: Bruce Young
  * @date: 2020年02月02日 17:48
  */

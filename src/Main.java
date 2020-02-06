@@ -1,7 +1,14 @@
 import javax.swing.*;
+
 import java.util.List;
 import java.util.Random;
 
+/**
+ * 模拟程序主入口
+ *
+ * @author
+ * @comment GinRyan
+ */
 public class Main {
 
 
@@ -18,7 +25,7 @@ public class Main {
         Thread panelThread = new Thread(p);
         JFrame frame = new JFrame();
         frame.add(p);
-        frame.setSize(1000, 800);
+        frame.setSize(1100, 800);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setTitle("瘟疫传播模拟");

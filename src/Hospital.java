@@ -2,8 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 医院
+ * <p>
+ * 床位容量
+ *
  * @ClassName: Hospital
- * @Description: TODO
+ * @Description: 医院，包含床位容量
  * @author: Bruce Young
  * @date: 2020年02月02日 20:58
  */
@@ -48,6 +52,8 @@ public class Hospital {
             width = 0;
             height = 0;
         }
+        //根据医院床位数量计算医院宽度
+        //因为高度定了只能装载100个床位
         int column = Constants.BED_COUNT / 100;
         width = column * 6;
         //根据第一个床位坐标初始化其他床位的坐标
@@ -56,15 +62,15 @@ public class Hospital {
             for (int j = 10; j <= 610; j += 6) {
                 Bed bed = new Bed(point.getX() + i * 6, point.getY() + j);
                 beds.add(bed);
-
             }
 
         }
     }
 
     /**
-     * 获取下一个空床位
-     * @return 下一个空床位
+     * 使用床位
+     *
+     * @return
      */
     public Bed pickBed() {
         for (Bed bed : beds) {
@@ -73,5 +79,16 @@ public class Hospital {
             }
         }
         return null;
+    }
+
+    /**
+     * 死亡或痊愈出院空出床位
+     *
+     * @param bed
+     * @return
+     */
+    public Bed returnBed(Bed bed) {
+        bed.setEmpty(false);
+        return bed;
     }
 }
