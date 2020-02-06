@@ -11,7 +11,7 @@ public class Main {
     public static final JLabel HOSPITAL_STATE = new JLabel("");
 
     public static void main(String[] args) {
-        CLISuite.cliInit(args);
+        ArgSolver.cliInit(args);
         initPanel();
         initInfected();
     }

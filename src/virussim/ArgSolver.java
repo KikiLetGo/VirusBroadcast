@@ -3,91 +3,85 @@ package virussim;
 import java.util.regex.Pattern;
 
 /**
- * 命令行界面套件
+ * 参数传递工具
  * 
  * @author dy55
  */
-public class CLISuite {
+public class ArgSolver {
 
 	private static int cursor = 0;
 
 	/**
-	 * 命令行界面初始化
+	 * 初始化
 	 * 
 	 * @param args 传入参数
 	 */
 	public static void cliInit(String[] args) {
-		if (args.length == 0) {
-			System.out.println("没有传入任何参数");
-			// getHelp();
-		}
-		else {
-			for (; cursor < args.length; cursor++) {
-				if (!Pattern.matches("-.+", args[cursor])) {
-					errReport("传入参数错误");
-					System.exit(0);
-				}
-				switch (args[cursor].trim().toLowerCase()) {
-				// 初始感染数量
-				case "-o":
-				case "--original":
-					Constants.ORIGINAL_COUNT = Integer.valueOf(args[++cursor]);
-					break;
+		for (; cursor < args.length; cursor++) {
+			if (!Pattern.matches("-.+", args[cursor])) {
+				errReport("传入参数错误");
+				System.exit(0);
+			}
+			switch (args[cursor].trim().toLowerCase()) {
+			// 初始感染数量
+			case "-o":
+			case "--original":
+				Constants.ORIGINAL_COUNT = Integer.valueOf(args[++cursor]);
+				break;
 
-				// 传播率
-				case "-b":
-				case "--broad-rate":
-					Constants.BROAD_RATE = Float.valueOf(args[++cursor]);
-					break;
+			// 传播率
+			case "-b":
+			case "--broad-rate":
+				Constants.BROAD_RATE = Float.valueOf(args[++cursor]);
+				break;
 
-				// 潜伏时间
-				case "-s":
-				case "--shadow":
-					Constants.SHADOW_TIME = Float.valueOf(args[++cursor]);
-					break;
+			// 潜伏时间
+			case "-s":
+			case "--shadow":
+				Constants.SHADOW_TIME = Float.valueOf(args[++cursor]);
+				break;
 
-				// 医院收治时间
-				case "-r":
-				case "--receive":
-					Constants.HOSPITAL_RECEIVE_TIME = Integer.valueOf(args[++cursor]);
-					break;
+			// 医院收治时间
+			case "-r":
+			case "--receive":
+				Constants.HOSPITAL_RECEIVE_TIME = Integer.valueOf(args[++cursor]);
+				break;
 
-				// 床位
-				case "-c":
-				case "--bed-count":
-					Constants.BED_COUNT = Integer.valueOf(args[++cursor]);
-					break;
+			// 床位
+			case "-c":
+			case "--bed-count":
+				Constants.BED_COUNT = Integer.valueOf(args[++cursor]);
+				break;
 
-				// 流动意向平均值μ
-				case "-m":
-				case "--move-u":
-					Constants.u = Float.valueOf(args[++cursor]);
-					break;
+			// 流动意向平均值μ
+			case "-m":
+			case "--move-u":
+				Constants.u = Float.valueOf(args[++cursor]);
+				break;
 
-				// 总人口
-				case "-p":
-				case "--population":
-					Constants.POPULATION = Integer.valueOf(args[++cursor]);
-					break;
+			// 总人口
+			case "-p":
+			case "--population":
+				Constants.POPULATION = Integer.valueOf(args[++cursor]);
+				break;
 
-				// 安全距离
-				case "-d":
-				case "--safe-dist":
-					Constants.SAFE_DIST = Float.valueOf(args[++cursor]);
-					break;
+			// 安全距离
+			case "-d":
+			case "--safe-dist":
+				Constants.SAFE_DIST = Float.valueOf(args[++cursor]);
+				break;
 
-				// 其他
-				default:
-					errReport("传入参数错误");
-					// 没有Break，直接运行帮助
+			// 其他
+			default:
+				errReport("传入参数错误");
+				// 没有Break，直接运行帮助
 
-					// 帮助
-				case "-h":
-				case "-?":
-					getHelp();
-					System.exit(0);
-					break;
-				}
+				// 帮助
+			case "-h":
+			case "-?":
+				getHelp();
+				System.exit(0);
+				break;
 			}
 		}
 
