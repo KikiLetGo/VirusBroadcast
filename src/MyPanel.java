@@ -86,10 +86,9 @@ public class MyPanel extends JPanel implements Runnable {
         g.setColor(new Color(0x00ff00));
         g.drawString("空余病床：" + Math.max(Constants.BED_COUNT - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE), 0), captionStartOffsetX, captionStartOffsetY + 5 * captionSize);
         g.setColor(new Color(0xE39476));
-        //暂定急需病床数量为 NEED = 确诊发病者数量 - 已隔离住院数量 - 死亡人数
+        //暂定急需病床数量为 NEED = 确诊发病者数量 - 已隔离住院数量
         //
         int needBeds = PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED)
-                - PersonPool.getInstance().getPeopleSize(Person.State.DEATH)
                 - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE);
 
         g.drawString("急需病床：" + (needBeds > 0 ? needBeds : 0), captionStartOffsetX, captionStartOffsetY + 6 * captionSize);
