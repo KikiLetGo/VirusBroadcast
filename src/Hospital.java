@@ -92,7 +92,7 @@ public class Hospital extends Point {
      */
     public Bed returnBed(Bed bed) {
         if (bed != null) {
-            bed.setEmpty(false);
+            bed.setEmpty(true);
         }
         return bed;
     }
