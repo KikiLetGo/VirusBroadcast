@@ -14,7 +14,6 @@ import java.util.TimerTask;
  */
 public class MyPanel extends JPanel implements Runnable {
 
-    private int pIndex = 0;//人口池PersonPool的下标，用于遍历每个人
 
 
     public MyPanel() {
@@ -37,7 +36,6 @@ public class MyPanel extends JPanel implements Runnable {
         if(people==null){
             return;
         }
-        people.get(pIndex).update();
         for (Person person : people) {
             switch (person.getState()) {
                 case Person.State.NORMAL: {
@@ -63,10 +61,6 @@ public class MyPanel extends JPanel implements Runnable {
             person.update();//对各种状态的市民进行不同的处理
             g.fillOval(person.getX(), person.getY(), 3, 3);
 
-        }
-        pIndex++;
-        if (pIndex >= people.size()) {
-            pIndex = 0;
         }
 
         //显示数据信息
