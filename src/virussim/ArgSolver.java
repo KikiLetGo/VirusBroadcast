@@ -26,49 +26,49 @@ public class ArgSolver {
 			// 初始感染数量
 			case "-o":
 			case "--original":
-				Constants.ORIGINAL_COUNT = Integer.valueOf(args[++cursor]);
+				Constants.ORIGINAL_COUNT = Integer.parseInt(args[++cursor]);
 				break;
 
 			// 传播率
 			case "-b":
 			case "--broad-rate":
-				Constants.BROAD_RATE = Float.valueOf(args[++cursor]);
+				Constants.BROAD_RATE = Float.parseFloat(args[++cursor]);
 				break;
 
 			// 潜伏时间
 			case "-s":
 			case "--shadow":
-				Constants.SHADOW_TIME = Float.valueOf(args[++cursor]);
+				Constants.SHADOW_TIME = Float.parseFloat(args[++cursor]);
 				break;
 
 			// 医院收治时间
 			case "-r":
 			case "--receive":
-				Constants.HOSPITAL_RECEIVE_TIME = Integer.valueOf(args[++cursor]);
+				Constants.HOSPITAL_RECEIVE_TIME = Integer.parseInt(args[++cursor]);
 				break;
 
 			// 床位
 			case "-c":
 			case "--bed-count":
-				Constants.BED_COUNT = Integer.valueOf(args[++cursor]);
+				Constants.BED_COUNT = Integer.parseInt(args[++cursor]);
 				break;
 
 			// 流动意向平均值μ
 			case "-m":
 			case "--move-u":
-				Constants.u = Float.valueOf(args[++cursor]);
+				Constants.u = Float.parseFloat(args[++cursor]);
 				break;
 
 			// 总人口
 			case "-p":
 			case "--population":
-				Constants.POPULATION = Integer.valueOf(args[++cursor]);
+				Constants.POPULATION = Integer.parseInt(args[++cursor]);
 				break;
 
 			// 安全距离
 			case "-d":
 			case "--safe-dist":
-				Constants.SAFE_DIST = Float.valueOf(args[++cursor]);
+				Constants.SAFE_DIST = Float.parseFloat(args[++cursor]);
 				break;
 
 			// 其他
@@ -122,7 +122,7 @@ public class ArgSolver {
 
 	/**
 	 * 错误输出
-	 * 
+	 *
 	 * @param message 错误信息
 	 */
 	private static void errReport(String message) {
