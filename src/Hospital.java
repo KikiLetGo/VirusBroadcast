@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author: Bruce Young
  * @date: 2020年02月02日 20:58
  */
-public class Hospital extends Point{
+public class Hospital extends Point {
     private int width;
     private int height = 606;
 
@@ -46,7 +46,7 @@ public class Hospital extends Point{
 
     private Hospital() {
         //医院矩形所在坐标
-        super(800,110);
+        super(800, 110);
         //根据床位数量调整医院矩形的大小
         if (Constants.BED_COUNT == 0) {
             width = 0;
@@ -62,6 +62,9 @@ public class Hospital extends Point{
             for (int j = 10; j <= 610; j += 6) {
                 Bed bed = new Bed(point.getX() + i * 6, point.getY() + j);
                 beds.add(bed);
+                if (beds.size() >= Constants.BED_COUNT) {//确定医院床位承载数量
+                    break;
+                }
             }
 
         }
