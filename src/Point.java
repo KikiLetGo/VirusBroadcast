@@ -15,6 +15,17 @@ public class Point {
         this.y = y;
     }
 
+    /**
+     * 位移
+     *
+     * @param x
+     * @param y
+     */
+    public void moveTo(int x, int y) {
+        this.x += x;
+        this.y += y;
+    }
+
     public int getX() {
         return x;
     }

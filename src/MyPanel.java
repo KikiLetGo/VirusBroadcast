@@ -33,28 +33,33 @@ public class MyPanel extends JPanel implements Runnable {
         g.drawString("医院", Hospital.getInstance().getX() + Hospital.getInstance().getWidth() / 4, Hospital.getInstance().getY() - 16);
         //绘制代表人类的圆点
         List<Person> people = PersonPool.getInstance().getPersonList();
-        if(people==null){
+        if (people == null) {
             return;
         }
         for (Person person : people) {
             switch (person.getState()) {
                 case Person.State.NORMAL: {
-                	//健康人
+                    //健康人
                     g.setColor(new Color(0xdddddd));
                     break;
                 }
                 case Person.State.SHADOW: {
-                	//潜伏期感染者
+                    //潜伏期感染者
                     g.setColor(new Color(0xffee00));
                     break;
                 }
                 case Person.State.CONFIRMED:
-                	//确诊患者
+                    //确诊患者
                     g.setColor(new Color(0xff0000));
                     break;
                 case Person.State.FREEZE: {
-                	//已隔离者
+                    //已隔离者
                     g.setColor(new Color(0x48FFFC));
+                    break;
+                }
+                case Person.State.DEATH: {
+                    //死亡患者
+                    g.setColor(new Color(0x000000));
                     break;
                 }
             }
@@ -63,27 +68,37 @@ public class MyPanel extends JPanel implements Runnable {
 
         }
 
+        int captionStartOffsetX = 700 + Hospital.getInstance().getWidth() + 40;
+        int captionStartOffsetY = 40;
+        int captionSize = 24;
+
         //显示数据信息
         g.setColor(Color.WHITE);
-        g.drawString("城市总人数：" + Constants.CITY_PERSON_SIZE, 16, 40);
+        g.drawString("城市总人数：" + Constants.CITY_PERSON_SIZE, captionStartOffsetX, captionStartOffsetY);
         g.setColor(new Color(0xdddddd));
-        g.drawString("健康者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.NORMAL), 16, 64);
+        g.drawString("健康者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.NORMAL), captionStartOffsetX, captionStartOffsetY + captionSize);
         g.setColor(new Color(0xffee00));
-        g.drawString("潜伏者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.SHADOW), 16, 88);
+        g.drawString("潜伏期人数：" + PersonPool.getInstance().getPeopleSize(Person.State.SHADOW), captionStartOffsetX, captionStartOffsetY + 2 * captionSize);
         g.setColor(new Color(0xff0000));
-        g.drawString("感染者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED), 16, 112);
+        g.drawString("发病者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED), captionStartOffsetX, captionStartOffsetY + 3 * captionSize);
         g.setColor(new Color(0x48FFFC));
-        g.drawString("已隔离人数：" + PersonPool.getInstance().getPeopleSize(Person.State.FREEZE), 16, 136);
-        g.setColor(new Color(0x00ff00));        
-        g.drawString("空余病床：" + (Constants.BED_COUNT - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE)), 16, 160);
-        g.setColor(new Color(0xffffff));
-        g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), 16, 184);
-        g.setColor(new Color(0xffffff));
-        g.drawString("世界时间（天）：" + (int)(worldTime/10.0), 16, 208);
+        g.drawString("已隔离人数：" + PersonPool.getInstance().getPeopleSize(Person.State.FREEZE), captionStartOffsetX, captionStartOffsetY + 4 * captionSize);
+        g.setColor(new Color(0x00ff00));
+        g.drawString("空余病床：" + Math.max(Constants.BED_COUNT - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE), 0), captionStartOffsetX, captionStartOffsetY + 5 * captionSize);
+        g.setColor(new Color(0xE39476));
+        //暂定急需病床数量为 NEED = 确诊发病者数量 - 已隔离住院数量
+        //
+        int needBeds = PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED)
+                - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE);
 
-        g.setColor(new Color(0xCFE3C0));
-        g.drawString("病毒扩散时间：" + worldTime + " 单位", 16, 232);
+        g.drawString("急需病床：" + (needBeds > 0 ? needBeds : 0), captionStartOffsetX, captionStartOffsetY + 6 * captionSize);
+        g.setColor(new Color(0xccbbcc));
+        g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), captionStartOffsetX, captionStartOffsetY + 7 * captionSize);
+        g.setColor(new Color(0xffffff));
+        g.drawString("世界时间（天）：" + (int) (worldTime / 10.0), captionStartOffsetX, captionStartOffsetY + 8 * captionSize);
+
     }
+
 
     public static int worldTime = 0;//世界时间
 

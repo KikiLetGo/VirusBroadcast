@@ -11,8 +11,8 @@ import java.util.Random;
  */
 public class Main {
 
-
     public static void main(String[] args) {
+        initHospital();
         initPanel();
         initInfected();
     }
@@ -20,17 +20,26 @@ public class Main {
     /**
      * 初始化画布
      */
-    private static void initPanel(){
+    private static void initPanel() {
         MyPanel p = new MyPanel();
         Thread panelThread = new Thread(p);
         JFrame frame = new JFrame();
         frame.add(p);
-        frame.setSize(1100, 800);
+        frame.setSize(Constants.CITY_WIDTH + hospitalWidth + 300, Constants.CITY_HEIGHT);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setTitle("瘟疫传播模拟");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panelThread.start();//开启画布线程，即世界线程，接着看代码的下一站可以转MyPanel.java
+    }
+
+    private static int hospitalWidth;
+
+    /**
+     * 初始化医院参数
+     */
+    private static void initHospital() {
+        hospitalWidth = Hospital.getInstance().getWidth();
     }
 
     /**
