@@ -40,22 +40,22 @@ public class MyPanel extends JPanel implements Runnable {
         people.get(pIndex).update();
         for (Person person : people) {
             switch (person.getState()) {
-                case Person.State.NORMAL: {
-                	//健康人
+                case Person.State.NORMAL:{
+                    //健康人
                     g.setColor(new Color(0xdddddd));
                     break;
                 }
                 case Person.State.SHADOW: {
-                	//潜伏期感染者
+                    //潜伏期感染者
                     g.setColor(new Color(0xffee00));
                     break;
                 }
                 case Person.State.CONFIRMED:
-                	//确诊患者
+                    //确诊患者
                     g.setColor(new Color(0xff0000));
                     break;
                 case Person.State.FREEZE: {
-                	//已隔离者
+                    //已隔离者
                     g.setColor(new Color(0x48FFFC));
                     break;
                 }
@@ -74,11 +74,11 @@ public class MyPanel extends JPanel implements Runnable {
 
         //显示数据信息
         g.setColor(Color.WHITE);
-        g.drawString("城市总人数：" + Constants.CITY_PERSON_SIZE, captionStartOffsetX, captionStartOffsetY );
+        g.drawString("城市总人数：" + Constants.CITY_PERSON_SIZE, captionStartOffsetX, captionStartOffsetY);
         g.setColor(new Color(0xdddddd));
         g.drawString("健康者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.NORMAL), captionStartOffsetX, captionStartOffsetY + captionSize);
         g.setColor(new Color(0xffee00));
-        g.drawString("潜伏者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.SHADOW), captionStartOffsetX, captionStartOffsetY + 2 * captionSize);
+        g.drawString("潜伏期人数：" + PersonPool.getInstance().getPeopleSize(Person.State.SHADOW), captionStartOffsetX, captionStartOffsetY + 2 * captionSize);
         g.setColor(new Color(0xff0000));
         g.drawString("发病者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED), captionStartOffsetX, captionStartOffsetY + 3 * captionSize);
         g.setColor(new Color(0x48FFFC));
@@ -86,12 +86,19 @@ public class MyPanel extends JPanel implements Runnable {
         g.setColor(new Color(0x00ff00));
         g.drawString("空余病床：" + (Constants.BED_COUNT - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE)), captionStartOffsetX, captionStartOffsetY + 5 * captionSize);
         g.setColor(new Color(0xE39476));
-        g.drawString("急需病床：" + Hospital.getInstance().needBeds(), captionStartOffsetX, captionStartOffsetY + 6 * captionSize);
+        //暂定急需病床数量为 NEED = 确诊发病者数量 - 已隔离住院数量 - 死亡人数
+        //
+        int needBeds = PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED)
+                - PersonPool.getInstance().getPeopleSize(Person.State.DEATH)
+                - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE);
+
+        g.drawString("急需病床：" + (needBeds > 0 ? needBeds : 0), captionStartOffsetX, captionStartOffsetY + 6 * captionSize);
         g.setColor(new Color(0xccbbcc));
         g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), captionStartOffsetX, captionStartOffsetY + 7 * captionSize);
         g.setColor(new Color(0xffffff));
-        g.drawString("世界时间（天）：" + (int)(worldTime/10.0), captionStartOffsetX, captionStartOffsetY + 8 * captionSize);
-  ;    }
+        g.drawString("世界时间（天）：" + (int) (worldTime / 10.0), captionStartOffsetX, captionStartOffsetY + 8 * captionSize);
+        ;
+    }
 
 
     public static int worldTime = 0;//世界时间

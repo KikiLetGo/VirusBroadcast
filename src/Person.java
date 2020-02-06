@@ -41,7 +41,7 @@ public class Person extends Point {
 
         //已治愈出院的人转为NORMAL即可，否则会与作者通过数值大小判断状态的代码冲突
         int DEATH = FREEZE + 1;//病死者
-
+        //int CURED = DEATH + 1;//治愈数量用于计算治愈出院后归还床位数量，该状态是否存续待定
     }
 
     public Person(City city, int x, int y) {
@@ -180,6 +180,7 @@ public class Person extends Point {
 
     }
 
+    public Bed useBed;
 
     private float SAFE_DIST = 2f;//安全距离
 
@@ -204,9 +205,10 @@ public class Person extends Point {
                 dieMoment = confirmedTime + dieTime;//发病后确定死亡时刻
             } else {
                 dieMoment = -1;//逃过了死神的魔爪
+
             }
         }
-
+        //TODO 暂时缺失治愈出院市民的处理。需要确定一个变量用于治愈时长。由于案例太少，暂不加入。
 
 
         if (state == State.CONFIRMED
@@ -216,10 +218,10 @@ public class Person extends Point {
             if (bed == null) {
 
                 //没有床位了，报告需求床位数
-                Hospital.getInstance().increaseNeedBeds();
 
             } else {
                 //安置病人
+                useBed = bed;
                 state = State.FREEZE;
                 setX(bed.getX());
                 setY(bed.getY());
@@ -230,6 +232,7 @@ public class Person extends Point {
         //处理病死者
         if ((state == State.CONFIRMED || state == State.FREEZE) && MyPanel.worldTime >= dieMoment && dieMoment > 0) {
             state = State.DEATH;//患者死亡
+            Hospital.getInstance().returnBed(useBed);
         }
 
         //增加一个正态分布用于潜伏期内随机发病时间

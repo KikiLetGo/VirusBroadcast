@@ -12,12 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author: Bruce Young
  * @date: 2020年02月02日 20:58
  */
-public class Hospital {
-
-	//医院矩形所在坐标
-    private int x = 800;
-    private int y = 110;
-
+public class Hospital extends Point{
     private int width;
     private int height = 606;
 
@@ -30,13 +25,6 @@ public class Hospital {
         return height;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
 
     private static Hospital hospital = new Hospital();
 
@@ -47,22 +35,19 @@ public class Hospital {
     private Point point = new Point(800, 100);//第一个床位所在坐标，用于给其他床位定绝对坐标
     private List<Bed> beds = new ArrayList<>();
 
-    private AtomicInteger needBedsCount = new AtomicInteger();
-
-    public int increaseNeedBeds(){
-        return needBedsCount.incrementAndGet();
-    }
-
-    public int decreaseNeedBeds(){
-        return needBedsCount.decrementAndGet();
-    }
-
-    public int needBeds(){
-        return needBedsCount.get();
+    /**
+     * 获取所有床位
+     *
+     * @return
+     */
+    public List<Bed> getBeds() {
+        return beds;
     }
 
     private Hospital() {
-    	//根据床位数量调整医院矩形的大小
+        //医院矩形所在坐标
+        super(800,110);
+        //根据床位数量调整医院矩形的大小
         if (Constants.BED_COUNT == 0) {
             width = 0;
             height = 0;
@@ -103,7 +88,9 @@ public class Hospital {
      * @return
      */
     public Bed returnBed(Bed bed) {
-        bed.setEmpty(false);
+        if (bed != null) {
+            bed.setEmpty(false);
+        }
         return bed;
     }
 }
