@@ -48,13 +48,19 @@ public class MyPanel extends JPanel implements Runnable {
                     g.setColor(new Color(0xffee00));
                     break;
                 }
-                case Person.State.CONFIRMED:
-                	//确诊患者
+                case Person.State.CONFIRMED: {
+                    //确诊患者
                     g.setColor(new Color(0xff0000));
                     break;
+                }
                 case Person.State.FREEZE: {
                 	//已隔离者
                     g.setColor(new Color(0x48FFFC));
+                    break;
+                }
+                case Person.State.DEATH: {
+                    //已死亡者
+                    g.setColor(new Color(0x000000));
                     break;
                 }
             }
