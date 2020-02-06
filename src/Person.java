@@ -9,10 +9,8 @@ import java.util.Random;
  * @author: Bruce Young
  * @date: 2020年02月02日 17:05
  */
-public class Person {
+public class Person extends Point {
     private City city;
-    private int x;
-    private int y;
     private MoveTarget moveTarget;
     /**
      * 人群流动意愿影响系数sigma
@@ -28,7 +26,7 @@ public class Person {
 
     /**
      * 市民的状态
-     *
+     * <p>
      * 市民状态应该需要细分，虽然有的状态暂未纳入模拟，但是细分状态应该保留
      */
     public interface State {
@@ -38,35 +36,26 @@ public class Person {
         int CONFIRMED = SHADOW + 1;//发病且已确诊为感染病人
         int FREEZE = CONFIRMED + 1;//隔离治疗，禁止位移
         int CURED = FREEZE + 1;//已治愈出院
+        int HEAVEN = CURED + 1;//病死状态
     }
 
     public Person(City city, int x, int y) {
+        super(x, y);
         this.city = city;
-        this.x = x;
-        this.y = y;
-        targetXU = 100 * new Random().nextGaussian() + x;
-        targetYU = 100 * new Random().nextGaussian() + y;
+        //生成随机移动均值x-mu、y-mu，
+        targetXU = MathUtil.stdGaussian(100, x);
+        targetYU =  MathUtil.stdGaussian(100, y);
 
     }
 
     /**
-     * 流动意愿标准化
+     * 根据标准正态分布生成随机人口流动意愿
      * <p>
-     * 流动意愿标准化后判断是在0的左边还是右边从而决定是否流动。
-     * <p>
-     * 设X随机变量为服从正态分布，sigma是影响分布形态的系数，从而影响整体人群流动意愿分布
-     * u值决定正态分布的中轴是让更多人群偏向希望流动或者希望懒惰。
-     * <p>
-     * value的推导：
-     * StdX = (X-u)/sigma
-     * X = sigma * StdX + u
      *
      * @return
      */
     public boolean wantMove() {
-        double stdX = new Random().nextGaussian();
-        double value = sig * stdX + Constants.u;
-        return value > 0;
+        return MathUtil.stdGaussian(sig, Constants.u) > 0;
     }
 
     private int state = State.NORMAL;
@@ -77,22 +66,6 @@ public class Person {
 
     public void setState(int state) {
         this.state = state;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     int infectedTime = 0;
@@ -115,7 +88,7 @@ public class Person {
      * @return
      */
     public double distance(Person person) {
-        return Math.sqrt(Math.pow(x - person.getX(), 2) + Math.pow(y - person.getY(), 2));
+        return Math.sqrt(Math.pow(getX() - person.getX(), 2) + Math.pow(getY() - person.getY(), 2));
     }
 
     /**
@@ -123,17 +96,6 @@ public class Person {
      */
     private void freezy() {
         state = State.FREEZE;
-    }
-
-    /**
-     * 位移
-     *
-     * @param x
-     * @param y
-     */
-    private void moveTo(int x, int y) {
-        this.x += x;
-        this.y += y;
     }
 
     /**
@@ -148,16 +110,15 @@ public class Person {
         }
         //存在流动意愿的，将进行流动，流动位移仍然遵循标准正态分布
         if (moveTarget == null || moveTarget.isArrived()) {
-
-            double targetX = targetSig * new Random().nextGaussian() + targetXU;
-            double targetY = targetSig * new Random().nextGaussian() + targetYU;
+            double targetX = MathUtil.stdGaussian(targetSig, targetXU);
+            double targetY =  MathUtil.stdGaussian(targetSig, targetYU);
             moveTarget = new MoveTarget((int) targetX, (int) targetY);
 
         }
 
         //计算运动位移
-        int dX = moveTarget.getX() - x;
-        int dY = moveTarget.getY() - y;
+        int dX = moveTarget.getX() - getX();
+        int dY = moveTarget.getY() - getY();
         double length = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 
         if (length < 1) {
@@ -183,7 +144,7 @@ public class Person {
             }
         }
 
-        if (x > 700) {
+        if (getX() > 700) {
             moveTarget = null;
             if (udX > 0) {
                 udX = -udX;
@@ -199,13 +160,17 @@ public class Person {
 
     private float SAFE_DIST = 2f;
 
+    /**
+     * 更新发布市民健康状态
+     */
     public void update() {
         //@TODO找时间改为状态机
         if (state >= State.FREEZE) {
             return;
         }
 
-        if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
+        if (state == State.CONFIRMED
+                && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
             Bed bed = Hospital.getInstance().pickBed();//查找空床位
             if (bed == null) {
                 //没有床位了
@@ -213,12 +178,14 @@ public class Person {
             } else {
                 //安置病人
                 state = State.FREEZE;
-                x = bed.getX();
-                y = bed.getY();
+                setX(bed.getX());
+                setY(bed.getY());
                 bed.setEmpty(false);
             }
         }
-        if (MyPanel.worldTime - infectedTime > Constants.SHADOW_TIME && state == State.SHADOW) {
+        //增加一个正态分布用于潜伏期内随机发病时间
+        double stdRnShadowtime = MathUtil.stdGaussian(25,  Constants.SHADOW_TIME / 2);
+        if (MyPanel.worldTime - infectedTime > stdRnShadowtime && state == State.SHADOW) {
             state = State.CONFIRMED;//潜伏者发病
             confirmedTime = MyPanel.worldTime;//刷新时间
         }

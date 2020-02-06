@@ -74,7 +74,7 @@ public class MyPanel extends JPanel implements Runnable {
         g.setColor(new Color(0xffee00));
         g.drawString("潜伏者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.SHADOW), 16, 88);
         g.setColor(new Color(0xff0000));
-        g.drawString("感染者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED), 16, 112);
+        g.drawString("发病者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED), 16, 112);
         g.setColor(new Color(0x48FFFC));
         g.drawString("已隔离人数：" + PersonPool.getInstance().getPeopleSize(Person.State.FREEZE), 16, 136);
         g.setColor(new Color(0x00ff00));
