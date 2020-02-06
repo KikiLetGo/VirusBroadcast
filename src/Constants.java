@@ -1,6 +1,8 @@
 /**
+ * 模拟参数
+ *
  * @ClassName: Constants
- * @Description: TODO
+ * @Description: 模拟参数
  * @author: Bruce Young
  * @date: 2020年02月02日 21:40
  */
