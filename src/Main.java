@@ -11,7 +11,6 @@ import java.util.Random;
  */
 public class Main {
 
-
     public static void main(String[] args) {
         initPanel();
         initInfected();
@@ -20,12 +19,12 @@ public class Main {
     /**
      * 初始化画布
      */
-    private static void initPanel(){
+    private static void initPanel() {
         MyPanel p = new MyPanel();
         Thread panelThread = new Thread(p);
         JFrame frame = new JFrame();
         frame.add(p);
-        frame.setSize(1100, 800);
+        frame.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setTitle("瘟疫传播模拟");

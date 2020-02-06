@@ -147,7 +147,7 @@ public class Person extends Point {
             return;
         }
 
-        int udX = (int) (dX / length);//x轴移动步长，符号为沿x轴前进方向
+        int udX = (int) (dX / length);//x轴dX为位移量，符号为沿x轴前进方向, 即udX为X方向表示量
         if (udX == 0 && dX != 0) {
             if (dX > 0) {
                 udX = 1;
@@ -157,7 +157,7 @@ public class Person extends Point {
         }
 
 
-        int udY = (int) (dY / length);//y轴移动步长，符号为沿x轴前进方向
+        int udY = (int) (dY / length);//y轴dY为位移量，符号为沿x轴前进方向，即udY为Y方向表示量
         //FIXED: 修正一处错误
         if (udY == 0 && dY != 0) {
             if (dY > 0) {
@@ -167,13 +167,18 @@ public class Person extends Point {
             }
         }
 
-
-        if (getX() > 700) {
-            //这个700也许是x方向边界的意思，因为画布大小1000x800
-            //TODO:如果是边界那么似乎边界判断还差一个y方向
+        //横向运动边界 ，腾出400为医院所在位置
+        if (getX() > Constants.WINDOW_WIDTH - 400 || getX() < 0) {
             moveTarget = null;
             if (udX > 0) {
                 udX = -udX;
+            }
+        }
+        //纵向运动边界
+        if (getY() > Constants.WINDOW_HEIGHT || getY() < 0) {
+            moveTarget = null;
+            if (udY > 0) {
+                udY = -udY;
             }
         }
         moveTo(udX, udY);

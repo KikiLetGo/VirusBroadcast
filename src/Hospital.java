@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date: 2020年02月02日 20:58
  */
 public class Hospital extends Point {
+    public static final int HOSPITAL_X = 720;
+    public static final int HOSPITAL_Y = 80;
     private int width;
     private int height = 606;
 
@@ -32,7 +34,7 @@ public class Hospital extends Point {
         return hospital;
     }
 
-    private Point point = new Point(800, 100);//第一个床位所在坐标，用于给其他床位定绝对坐标
+    private Point point = new Point(HOSPITAL_X, HOSPITAL_Y);//第一个床位所在坐标，用于给其他床位定绝对坐标
     private List<Bed> beds = new ArrayList<>();
 
     /**
@@ -46,7 +48,7 @@ public class Hospital extends Point {
 
     private Hospital() {
         //医院矩形所在坐标
-        super(800, 110);
+        super(HOSPITAL_X, HOSPITAL_Y + 10);
         //根据床位数量调整医院矩形的大小
         if (Constants.BED_COUNT == 0) {
             width = 0;
@@ -59,7 +61,7 @@ public class Hospital extends Point {
         //根据第一个床位坐标初始化其他床位的坐标
         for (int i = 0; i < column; i++) {
 
-            for (int j = 10; j <= 610; j += 6) {
+            for (int j = 10; j <= 606; j += 6) {
                 Bed bed = new Bed(point.getX() + i * 6, point.getY() + j);
                 beds.add(bed);
                 if (beds.size() >= Constants.BED_COUNT) {//确定医院床位承载数量

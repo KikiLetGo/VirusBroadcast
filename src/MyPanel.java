@@ -73,7 +73,7 @@ public class MyPanel extends JPanel implements Runnable {
         if (pIndex >= people.size()) {
             pIndex = 0;
         }
-        int captionStartOffsetX = 16;
+        int captionStartOffsetX = 700 + Hospital.getInstance().getWidth() + 40;
         int captionStartOffsetY = 40;
         int captionSize = 24;
 
