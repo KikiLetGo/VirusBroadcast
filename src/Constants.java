@@ -18,5 +18,6 @@ public class Constants {
     public static float FATALITY_RATE = 0.50f;//fatality_rate病死率，根据2月6日数据估算（病死数/确诊数）为0.02
     public static int DIE_TIME = 100;//死亡时间均值，30天，从发病（确诊）时开始计时
     public static double DIE_VARIANCE = 1;//死亡时间方差
+    public static int CITY_CENTER = 400;
 
 }
