@@ -28,7 +28,7 @@ public class Person {
 
     /**
      * 市民的状态
-     *
+     * <p>
      * 市民状态应该需要细分，虽然有的状态暂未纳入模拟，但是细分状态应该保留
      */
     public interface State {
@@ -151,8 +151,8 @@ public class Person {
         }
         //存在流动意愿的，将进行流动，流动位移仍然遵循标准正态分布
         if (moveTarget == null || moveTarget.isArrived()) {
-        	//在想要移动并且没有目标时，将自身移动目标设置为随机生成的符合正态分布的目标点
-        	//产生N(a,b)的数：Math.sqrt(b)*random.nextGaussian()+a
+            //在想要移动并且没有目标时，将自身移动目标设置为随机生成的符合正态分布的目标点
+            //产生N(a,b)的数：Math.sqrt(b)*random.nextGaussian()+a
             double targetX = targetSig * new Random().nextGaussian() + targetXU;
             double targetY = targetSig * new Random().nextGaussian() + targetYU;
             moveTarget = new MoveTarget((int) targetX, (int) targetY);
@@ -165,7 +165,7 @@ public class Person {
         double length = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));//与目标点的距离
 
         if (length < 1) {
-        	//判断是否到达目标点
+            //判断是否到达目标点
             moveTarget.setArrived(true);
             return;
         }
@@ -189,8 +189,8 @@ public class Person {
         }
 
         if (x > 700) {
-        	//这个700也许是x方向边界的意思，因为画布大小1000x800
-        	//TODO:如果是边界那么似乎边界判断还差一个y方向        	
+            //这个700也许是x方向边界的意思，因为画布大小1000x800
+            //TODO:如果是边界那么似乎边界判断还差一个y方向
             moveTarget = null;
             if (udX > 0) {
                 udX = -udX;
@@ -211,31 +211,22 @@ public class Person {
      */
     public void update() {
         //@TODO找时间改为状态机
-        if (state == State.FREEZE || state == State.DEATH) {
-            return;//如果已经隔离或者死亡了，就不需要处理了
+        if (state == State.DEATH) {
+            return;//如果已经死亡了，就不需要处理了
         }
-        //处理已经确诊的感染者（即患者）
-        //
+
+        //记录死亡时刻
         if (state == State.CONFIRMED && dieMoment == 0) {
-        	int destiny = new Random().nextInt(10000)+1;//命运数字，[1,10000]随机数
-        	if (1 <= destiny && destiny <= (int)(Constants.FATALITY_RATE * 10000)) {
-        		//如果命运数字落在死亡区间
-        		int dieTime = (int) (Constants.DIE_VARIANCE * new Random().nextGaussian()+Constants.DIE_TIME);
-            	dieMoment = confirmedTime + dieTime;//发病后确定死亡时刻
-            	//System.out.printf("%d,%f,%d\n",destiny,Constants.FATALITY_RATE * 10000,dieTime);
-        	}
-        	else {
-        		dieMoment = -1;//逃过了死神的魔爪
-        	}
-        	
+            int dieTime = (int) (Constants.DIE_VARIANCE * new Random().nextGaussian() + Constants.DIE_TIME);
+            dieMoment = confirmedTime + dieTime;//发病后确定死亡时刻
         }
-        //*/
+
 
         if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
-        	//如果患者已经确诊，且（世界时刻-确诊时刻）大于医院响应时间，即医院准备好病床了，可以抬走了
+            //如果患者已经确诊，且（世界时刻-确诊时刻）大于医院响应时间，即医院准备好病床了，可以抬走了
             Bed bed = Hospital.getInstance().pickBed();//查找空床位
             if (bed == null) {
-                //没有床位了
+                //没有床位了,等待空床
 //                System.out.println("隔离区没有空床位");
             } else {
                 //安置病人
@@ -245,9 +236,24 @@ public class Person {
                 bed.setEmpty(false);
             }
         }
+
+        //处理医院隔离患者
+        if (state == State.FREEZE && MyPanel.worldTime < dieMoment && dieMoment > 0) {
+            int destiny = new Random().nextInt(10000)+1;//命运数字，[1,10000]随机数
+            //治愈成功
+            if (destiny > (int)(Constants.FATALITY_RATE * 10000)) {
+                state = State.NORMAL;
+                Hospital.getInstance().returnBed();//腾出一张床位
+                x = Constants.CITY_CENTER;
+                y = Constants.CITY_CENTER;
+            }
+        }
         //处理病死者
-        if((state == State.CONFIRMED || state == State.FREEZE )&& MyPanel.worldTime >= dieMoment && dieMoment > 0) {
-        	state = State.DEATH;//患者死亡
+        if ((state == State.CONFIRMED || state == State.FREEZE) && MyPanel.worldTime >= dieMoment && dieMoment > 0) {
+            state = State.DEATH;//患者死亡
+            Hospital.getInstance().returnBed();//腾出一张床位
+            x = Constants.CITY_CENTER;
+            y = Constants.CITY_CENTER;
         }
         //处理发病的潜伏期感染者
         if (MyPanel.worldTime - infectedTime > Constants.SHADOW_TIME && state == State.SHADOW) {
@@ -262,7 +268,8 @@ public class Person {
             return;
         }
         for (Person person : people) {
-            if (person.getState() == State.NORMAL) {
+            //去除死亡的人和健康的人
+            if (person.getState() == State.NORMAL || person.getState() == State.DEATH) {
                 continue;
             }
             float random = new Random().nextFloat();
