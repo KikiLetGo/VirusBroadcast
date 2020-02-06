@@ -77,8 +77,11 @@ public class MyPanel extends JPanel implements Runnable {
         g.drawString("感染者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED), 16, 112);
         g.setColor(new Color(0x48FFFC));
         g.drawString("已隔离人数：" + PersonPool.getInstance().getPeopleSize(Person.State.FREEZE), 16, 136);
-        g.setColor(new Color(0x00ff00));
+        g.setColor(new Color(0x00ff00));        
         g.drawString("空余病床：" + (Constants.BED_COUNT - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE)), 16, 160);
+        g.setColor(new Color(0xffffff));
+        g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), 16, 184);
+        
     }
 
     public static int worldTime = 0;//世界时间

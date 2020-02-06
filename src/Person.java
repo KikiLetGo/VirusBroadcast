@@ -20,12 +20,13 @@ public class Person {
     double targetSig = 50;//方差sigma
 
 
-    public interface State {//市民状态，建议后来的大佬将其改成枚举类型
+    public interface State {//市民状态
         int NORMAL = 0;//未被感染
         int SHADOW = NORMAL + 1;//潜伏者
 
         int CONFIRMED = SHADOW + 1;//感染者
         int FREEZE = CONFIRMED + 1;//已隔离
+        int DEATH = FREEZE + 1;//病死者
     }
 
     public Person(City city, int x, int y) {
@@ -74,8 +75,9 @@ public class Person {
         this.y = y;
     }
 
-    int infectedTime = 0;
-    int confirmedTime = 0;
+    int infectedTime = 0;//感染时刻
+    int confirmedTime = 0;//确诊时刻
+    int dieMoment = 0;//死亡时刻
 
     public boolean isInfected() {
         return state >= State.SHADOW;
@@ -170,9 +172,15 @@ public class Person {
     public void update() {
         //TODO:找时间改为状态机
         if (state >= State.FREEZE) {
-            return;//如果已经隔离了，就不需要处理了，此状态目前为数值最大的状态
+            return;//如果已经隔离或者死亡了，就不需要处理了
         }
         //处理已经确诊的感染者（即患者）
+        //
+        if (state == State.CONFIRMED) {
+        	int dieTime = (int) (Constants.DIE_VARIANCE * new Random().nextGaussian()+Constants.DIE_TIME);
+        	dieMoment = confirmedTime + dieTime;//发病后确定死亡时刻
+        }
+        //*/
         if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
         	//如果患者已经确诊，且（世界时刻-确诊时刻）大于医院响应时间，即医院准备好病床了，可以抬走了
             Bed bed = Hospital.getInstance().pickBed();//查找空床位
@@ -186,6 +194,10 @@ public class Person {
                 y = bed.getY();
                 bed.setEmpty(false);
             }
+        }
+        //处理病死者
+        if((state == State.CONFIRMED || state == State.FREEZE )&& MyPanel.worldTime >= dieMoment) {
+        	state = State.DEATH;//患者死亡
         }
         //处理发病的潜伏期感染者
         if (MyPanel.worldTime - infectedTime > Constants.SHADOW_TIME && state == State.SHADOW) {
