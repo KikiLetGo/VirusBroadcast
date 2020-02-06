@@ -14,8 +14,7 @@ import java.util.TimerTask;
  */
 public class MyPanel extends JPanel implements Runnable {
 
-
-    private int pIndex = 0;
+    private int pIndex = 0;//人口池PersonPool的下标，用于遍历每个人
 
 
     public MyPanel() {
@@ -33,7 +32,7 @@ public class MyPanel extends JPanel implements Runnable {
         g.setFont(new Font("微软雅黑", Font.BOLD, 16));
         g.setColor(new Color(0x00ff00));
         g.drawString("医院", Hospital.getInstance().getX() + Hospital.getInstance().getWidth() / 4, Hospital.getInstance().getY() - 16);
-
+        //绘制代表人类的圆点
         List<Person> people = PersonPool.getInstance().getPersonList();
         if (people == null) {
             return;
@@ -42,22 +41,26 @@ public class MyPanel extends JPanel implements Runnable {
         for (Person person : people) {
             switch (person.getState()) {
                 case Person.State.NORMAL: {
+                	//健康人
                     g.setColor(new Color(0xdddddd));
                     break;
                 }
                 case Person.State.SHADOW: {
+                	//潜伏期感染者
                     g.setColor(new Color(0xffee00));
                     break;
                 }
                 case Person.State.CONFIRMED:
+                	//确诊患者
                     g.setColor(new Color(0xff0000));
                     break;
                 case Person.State.FREEZE: {
+                	//已隔离者
                     g.setColor(new Color(0x48FFFC));
                     break;
                 }
             }
-            person.update();
+            person.update();//对各种状态的市民进行不同的处理
             g.fillOval(person.getX(), person.getY(), 3, 3);
 
         }
@@ -81,11 +84,14 @@ public class MyPanel extends JPanel implements Runnable {
         g.drawString("空余病床：" + (Constants.BED_COUNT - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE)), 16, 160);
         g.setColor(new Color(0xE39476));
         g.drawString("急需病床：" + Hospital.getInstance().needBeds(), 16, 184);
-        g.setColor(new Color(0xCFE3C0));
-        g.drawString("病毒扩散时间：" + worldTime + " 单位", 16, 208);
-    }
+        g.setColor(new Color(0xffffff));
+        g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), 16, 184);
+        g.setColor(new Color(0xffffff));
+        g.drawString("世界时间（天）：" + (int)(worldTime/10.0), 16, 208);
+  ;    }
 
-    public static int worldTime = 0;
+
+    public static int worldTime = 0;//世界时间
 
     public Timer timer = new Timer();
 
@@ -99,7 +105,7 @@ public class MyPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        timer.schedule(new MyTimerTask(), 0, 100);
+        timer.schedule(new MyTimerTask(), 0, 100);//启动世界计时器，时间开始流动（突然脑补DIO台词：時は停た）
     }
 
 
