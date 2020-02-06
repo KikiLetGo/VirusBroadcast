@@ -167,15 +167,15 @@ public class Person extends Point {
             }
         }
 
-        //横向运动边界 ，腾出400为医院所在位置
-        if (getX() > Constants.WINDOW_WIDTH - 400 || getX() < 0) {
+        //横向运动边界
+        if (getX() > Constants.CITY_WIDTH || getX() < 0) {
             moveTarget = null;
             if (udX > 0) {
                 udX = -udX;
             }
         }
         //纵向运动边界
-        if (getY() > Constants.WINDOW_HEIGHT || getY() < 0) {
+        if (getY() > Constants.CITY_HEIGHT || getY() < 0) {
             moveTarget = null;
             if (udY > 0) {
                 udY = -udY;

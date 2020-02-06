@@ -16,7 +16,7 @@ public class Hospital extends Point {
     public static final int HOSPITAL_X = 720;
     public static final int HOSPITAL_Y = 80;
     private int width;
-    private int height = 606;
+    private int height = 600;
 
     public int getWidth() {
         return width;

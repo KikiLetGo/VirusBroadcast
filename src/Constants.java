@@ -27,7 +27,7 @@ public class Constants {
     /**
      * 城市大小即窗口边界，限制不允许出城
      */
-    public static final int WINDOW_WIDTH = 1100;
-    public static final int WINDOW_HEIGHT = 800;
+    public static final int CITY_WIDTH = 700;
+    public static final int CITY_HEIGHT = 800;
 
 }
