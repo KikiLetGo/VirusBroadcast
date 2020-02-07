@@ -1,3 +1,4 @@
+import javax.net.ssl.HostnameVerifier;
 import java.util.List;
 import java.util.Random;
 
@@ -195,12 +196,12 @@ public class Person extends Point {
     public void update() {
         //@TODO找时间改为状态机
 
-        if (state == State.FREEZE || state == State.DEATH) {
-            return;//如果已经隔离或者死亡了，就不需要处理了
+        if (state == State.DEATH) {
+            return;//如果已经死亡，就不需要处理了
         }
 
         //处理已经确诊的感染者（即患者）
-        if (state == State.CONFIRMED && dieMoment == 0) {
+        if ((state == State.CONFIRMED || state == State.FREEZE) && dieMoment == 0) {
 
             int destiny = new Random().nextInt(10000) + 1;//幸运数字，[1,10000]随机数
             if (1 <= destiny && destiny <= (int) (Constants.FATALITY_RATE * 10000)) {
@@ -223,6 +224,9 @@ public class Person extends Point {
             if (bed == null) {
 
                 //没有床位了，报告需求床位数
+                if(Hospital.bedInNeed < PersonPool.getInstance().getPeopleSize(State.FREEZE)) {
+                    Hospital.bedInNeed++;
+                }
 
             } else {
                 //安置病人
