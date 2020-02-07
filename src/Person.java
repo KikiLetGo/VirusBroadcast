@@ -8,28 +8,24 @@ import java.util.Random;
  * @date: 2020年02月02日 17:05
  */
 public class Person {
-    private City city;
     private int x;
     private int y;
     private MoveTarget moveTarget;
     int sig = 1;
 
-
     double targetXU;
     double targetYU;
     double targetSig = 50;
 
+    public interface State {// 市民状态
+        int NORMAL = 0;// 未被感染
+        int SHADOW = NORMAL + 1;// 潜伏者
 
-    public interface State {//市民状态
-        int NORMAL = 0;//未被感染
-        int SHADOW = NORMAL + 1;//潜伏者
-
-        int CONFIRMED = SHADOW + 1;//感染者
-        int FREEZE = CONFIRMED + 1;//已隔离
+        int CONFIRMED = SHADOW + 1;// 感染者
+        int FREEZE = CONFIRMED + 1;// 已隔离
     }
 
     public Person(City city, int x, int y) {
-        this.city = city;
         this.x = x;
         this.y = y;
         targetXU = 100 * new Random().nextGaussian() + x;
@@ -82,10 +78,6 @@ public class Person {
 
     public double distance(Person person) {
         return Math.sqrt(Math.pow(x - person.getX(), 2) + Math.pow(y - person.getY(), 2));
-    }
-
-    private void freezy() {
-        state = State.FREEZE;
     }
 
     private void moveTo(int x, int y) {
