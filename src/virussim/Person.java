@@ -156,7 +156,7 @@ public class Person {
             }
         }
         int udY = (int) (dY / length);
-        if (udY == 0 && udY != 0) {
+        if (udY == 0 && dY != 0) {
             if (dY > 0) {
                 udY = 1;
             } else {
