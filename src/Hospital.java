@@ -88,12 +88,14 @@ public class Hospital extends Point {
     }
 
     /**
-     * 死亡或痊愈出院空出床位
+     * 死亡或痊愈出院空出床位。
      *
      * @param bed
      * @return
      */
     public Bed returnBed(Bed bed) {
+        //实际上不应该在这里判空。如果传入bed为空说明医院未曾收治。
+        //判空为了防止程序出错。
         if (bed != null) {
             bed.setEmpty(true);
         }

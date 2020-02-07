@@ -225,19 +225,26 @@ public class Person extends Point {
                 //没有床位了，报告需求床位数
 
             } else {
-                //安置病人
-                useBed = bed;
+                //安置病人，病床一定要判空。
+                //床位也只放一次
                 state = State.FREEZE;
-                setX(bed.getX());
-                setY(bed.getY());
-                bed.setEmpty(false);
+                if (useBed == null) {
+                    useBed = bed;
+                    bed.setEmpty(false);
+                    setX(bed.getX());
+                    setY(bed.getY());
+                }
+
             }
         }
 
         //处理病死者
         if ((state == State.CONFIRMED || state == State.FREEZE) && MyPanel.worldTime >= dieMoment && dieMoment > 0) {
             state = State.DEATH;//患者死亡
-            Hospital.getInstance().returnBed(useBed);//归还床位
+            if (useBed != null) {//已有床位引用则说明已经收治，需归还床位
+                Hospital.getInstance().returnBed(useBed);//归还床位
+            }
+
         }
 
         //增加一个正态分布用于潜伏期内随机发病时间
