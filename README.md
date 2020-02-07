@@ -11,9 +11,9 @@
 
 ## 图例
 
-![snapshot1](E:\VirusBroadcast\snapshot\snapshot1.png)
+![snapshot1](snapshot\snapshot1.png)
 
-![snapshot2](E:\VirusBroadcast\snapshot\snapshot2.png)
+![snapshot2](snapshot\snapshot2.png)
 
 
 
