@@ -1,6 +1,7 @@
+package entity;
+
 /**
  * 床位
- *
  *
  * @ClassName: Bed
  * @Description: 床位

@@ -1,6 +1,9 @@
+package entity;
+
+import util.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 医院
