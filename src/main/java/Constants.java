@@ -20,4 +20,5 @@ public class Constants {
     public static double DIE_VARIANCE = 1;//死亡时间方差
     public static int CITY_CENTER = 400;
 
+
 }

@@ -44,7 +44,7 @@ public class Hospital {
     }
 
     private Point point = new Point(800, 100);//第一个床位所在坐标，用于给其他床位定绝对坐标
-    private List<Bed> beds = new ArrayList<>();
+    private List<Bed> beds = new ArrayList<Bed>();
 
     private Hospital() {
     	//根据床位数量调整医院矩形的大小
@@ -90,5 +90,13 @@ public class Hospital {
     public Bed returnBed(Bed bed) {
         bed.setEmpty(false);
         return bed;
+    }
+
+    public void returnBed() {
+        for (Bed bed : beds){
+            if (!bed.isEmpty()){
+                bed.setEmpty(true);
+            }
+        }
     }
 }

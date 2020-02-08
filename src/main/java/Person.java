@@ -246,7 +246,7 @@ public class Person {
         if (state == State.FREEZE && MyPanel.worldTime < dieMoment && dieMoment > 0) {
             int destiny = new Random().nextInt(10000)+1;//命运数字，[1,10000]随机数
             //治愈成功
-            if (destiny > (int)(Constants.FATALITY_RATE * 10000)) {
+        	if (destiny > (int)(Constants.FATALITY_RATE * 10000)) {
                 state = State.NORMAL;
                 Hospital.getInstance().returnBed();//腾出一张床位
                 //无论患者被治愈还是死亡，都将该患者送入医院大门口，为简单起见，大门口坐标为市中心坐标（400,400）
