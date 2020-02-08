@@ -30,7 +30,8 @@ Specially thank Bruce Young and his "Ele shiyanshi" (Hungry Lab) for releasing s
 | --: | :-- |
 | 原始库 | [KikiLetGo/VirusBroadcast](https://github.com/KikiLetGo/VirusBroadcast) |
 | 使用语言 | Java |
-| 原始开发者 | Bruce Young (Java), cnctemaR (Kotlin) |
+| 原始开发者 | Bruce Young |
+| Kotlin版开发者 | cnctemaR |
 
 ## 使用方法 Usage
 
