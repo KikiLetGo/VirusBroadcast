@@ -12,6 +12,10 @@ and tell everyone on BiliBili why it's safer to stay home while the coronavirus 
 
 The code has been modified. If you want to see the original code, please go to https://github.com/KikiLetGo/VirusBroadcast.
 
+Kotlin版源代码来自[cnctemaR/VirusBroadcast](https://github.com/cnctemaR/VirusBroadcast)
+
+Kotlin edition source is from [cnctemaR/VirusBroadcast](https://github.com/cnctemaR/VirusBroadcast)
+
 
 **武汉加油！中国加油！💪**
 
@@ -26,7 +30,7 @@ Specially thank Bruce Young and his "Ele shiyanshi" (Hungry Lab) for releasing s
 | --: | :-- |
 | 原始库 | [KikiLetGo/VirusBroadcast](https://github.com/KikiLetGo/VirusBroadcast) |
 | 使用语言 | Java |
-| 原始开发者 | Bruce Young |
+| 原始开发者 | Bruce Young (Java), cnctemaR (Kotlin) |
 
 ## 使用方法 Usage
 
