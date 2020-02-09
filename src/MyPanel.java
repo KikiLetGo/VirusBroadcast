@@ -119,7 +119,7 @@ public class MyPanel extends JPanel implements Runnable {
 
         @Override
         public void run() {
-            //动画重绘终止条件， 以被隔离超过100人时停止为例。
+            //增加动画重绘终止条件
             if (!this.isStop()) {
                 MyPanel.this.repaint();
                 worldTime++;
