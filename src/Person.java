@@ -183,15 +183,15 @@ public class Person extends Point {
 
         if (state == State.DEATH) {
             if (Hospital.getInstance().inHospital(getX(), getY())) {
-                setX(0);
-                setY(0);
+                setX(-1);
+                setY(-1);
             }
         }
 
         if (state == State.FREEZE) {
             // 对隔离患者判断治愈成功率
-            double success = MathUtil.stdGaussian(1, Constants.RECOVERY_RATE);
-            if (success >= 2) {
+            float success = new Random().nextFloat();
+            if (success < Constants.RECOVERY_RATE) {
                 state = State.NORMAL;
                 Random random = new Random();
                 int x = (int) (100 * random.nextGaussian() + city.getCenterX());
