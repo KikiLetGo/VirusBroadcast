@@ -1,22 +1,4 @@
-# IntelliJ IDEA
 .idea/
 *.iml
 out/
-*.ipr
-*.iws
-*.eml
-# JAR Output
-src/META-IMF/
-
-# VS Code, Eclipse
-.vscode/
-bin/
-.settings/
-.classpath
-.project
-
-# VS
-*.sln
-*.csproj
-obj/
-.vs/
+*.class
