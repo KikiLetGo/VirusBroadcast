@@ -1,13 +1,15 @@
 /**
+ * 位移目标对象
+ *
  * @ClassName: MoveTarget
- * @Description: TODO
+ * @Description: 位移目标对象
  * @author: Bruce Young
  * @date: 2020年02月02日 17:47
  */
 public class MoveTarget {
     private int x;
     private int y;
-    private boolean arrived=false;
+    private boolean arrived=false;//是否到达目标点
 
     public MoveTarget(int x, int y) {
         this.x = x;
