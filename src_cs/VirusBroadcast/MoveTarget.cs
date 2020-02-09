@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace VirusBroadcast {
-	public class TargetMovement : Point {
-		public TargetMovement(int x, int y) : base(x, y) {
+	public class MoveTarget : Point {
+		public MoveTarget(int x, int y) : base(x, y) {
 		}
 
 		public bool IsArrived { get; set; } = false;

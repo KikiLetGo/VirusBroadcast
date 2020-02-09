@@ -25,7 +25,7 @@ public class PersonPool {
 
 
     /**
-     * @param state 市民类型 Person.State的值，若为-1则返回当前总数目
+     * @param state 市民类型 Person.State的值，若为null则返回当前总数目
      * @return 获取指定人群数量
      */
     public int getPeopleSize(Person.State state) {

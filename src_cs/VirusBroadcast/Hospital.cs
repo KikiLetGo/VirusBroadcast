@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace VirusBroadcast {
-	public class Hospital {
+	public class Hospital : Point {
 
-		public int X { get; } = 800;
-
-		public int Y { get; } = 110;
+		public static int HOSPITAL_X { get; } = 720;
+		public static int HOSPITAL_Y { get; } = 80;
 
 		public int Width { get; }
 
-		public int Height { get; } = 606;
+		public int Height { get; } = 600;
 
 		private Point point = new Point(800, 100);
 
@@ -19,7 +18,7 @@ namespace VirusBroadcast {
 
 		public static Hospital Instance { get; } = new Hospital();
 
-		private Hospital() {
+		private Hospital() : base(HOSPITAL_X, HOSPITAL_Y) {
 			var column = Constants.BED_COUNT / 100;
 			Width = column * 6;
 
@@ -37,6 +36,13 @@ namespace VirusBroadcast {
 				}
 			}
 			return null;
+		}
+
+		public Bed LeaveBed(Bed bed) {
+			if(bed != null) {
+				bed.IsEmpty = true;
+			}
+			return bed;
 		}
 	}
 }

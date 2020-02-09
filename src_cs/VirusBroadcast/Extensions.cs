@@ -16,7 +16,7 @@ namespace VirusBroadcast {
 		/// <param name="mu">均值 (μ)</param>
 		/// <param name="sigma">标准差 (σ)</param>
 		/// <returns>一个正态随机数</returns>
-		public static double NextGaussian(this Random @this, double mu = 0, double sigma = 1) {
+		public static double NextGaussian(this Random @this, double sigma = 1, double mu = 0) {
 			var u1 = @this.NextDouble();
 			var u2 = @this.NextDouble();
 

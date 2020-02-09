@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirusBroadcast", "VirusBroadcast.csproj", "{F6C926AE-84AD-431C-9F90-40BB2C107053}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirusBroadcast", "VirusBroadcast\VirusBroadcast.csproj", "{2169E5DC-C85B-4613-BF4F-A16B964E5428}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F6C926AE-84AD-431C-9F90-40BB2C107053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6C926AE-84AD-431C-9F90-40BB2C107053}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6C926AE-84AD-431C-9F90-40BB2C107053}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6C926AE-84AD-431C-9F90-40BB2C107053}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2169E5DC-C85B-4613-BF4F-A16B964E5428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2169E5DC-C85B-4613-BF4F-A16B964E5428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2169E5DC-C85B-4613-BF4F-A16B964E5428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2169E5DC-C85B-4613-BF4F-A16B964E5428}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B6DB5AEA-F703-422A-B7C1-BBE7C05A913C}
+		SolutionGuid = {423C75FF-F750-4B33-9825-3217F4A963B3}
 	EndGlobalSection
 EndGlobal

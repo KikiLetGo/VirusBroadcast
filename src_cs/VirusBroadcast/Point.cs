@@ -13,5 +13,10 @@ namespace VirusBroadcast {
 			X = x;
 			Y = y;
 		}
+
+		public void MoveTo(int x, int y) {
+			X += x;
+			Y += y;
+		}
 	}
 }

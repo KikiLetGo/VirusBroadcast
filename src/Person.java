@@ -77,7 +77,7 @@ public class Person extends Point {
 
     int infectedTime = 0;//感染时刻
     int confirmedTime = 0;//确诊时刻
-    int dieMoment = 0;//死亡时刻，为0代表未确定，-1代表不会病死
+    int dieMoment = 0;//死亡时刻，为0代表未确定
 
 
     public boolean isInfected() {
@@ -102,7 +102,7 @@ public class Person extends Point {
     /**
      * 住院
      */
-    private void freezy() {
+    private void freeze() {
         state = State.FREEZE;
     }
 
@@ -110,11 +110,8 @@ public class Person extends Point {
      * 不同状态下的单个人实例运动行为
      */
     private void action() {
-
-        if (state == State.FREEZE || state == State.DEATH) {
-            return;//如果处于隔离或者死亡状态，则无法行动
-        }
-        if (!wantMove()) {
+        // 如果处于隔离或死亡状态，或者不想移动，则无法行动
+        if (state == State.FREEZE || state == State.DEATH || !wantMove()) {
             return;
         }
         //存在流动意愿的，将进行流动，流动位移仍然遵循标准正态分布
@@ -141,22 +138,12 @@ public class Person extends Point {
 
         int udX = (int) (dX / length);//x轴dX为位移量，符号为沿x轴前进方向, 即udX为X方向表示量
         if (udX == 0 && dX != 0) {
-            if (dX > 0) {
-                udX = 1;
-            } else {
-                udX = -1;
-            }
+            udX = round(dX);
         }
 
-
         int udY = (int) (dY / length);//y轴dY为位移量，符号为沿x轴前进方向，即udY为Y方向表示量
-        //FIXED: 修正一处错误
         if (udY == 0 && dY != 0) {
-            if (dY > 0) {
-                udY = 1;
-            } else {
-                udY = -1;
-            }
+            udY = round(dY);
         }
 
         //横向运动边界
@@ -176,10 +163,17 @@ public class Person extends Point {
         moveTo(udX, udY);
 
     }
+    
+    private int round(int value) {
+        if (value > 0) {
+            return 1;
+        }
+        return -1;
+    }
 
     public Bed useBed;
 
-    private float SAFE_DIST = Constants.SAFE_DIST;//安全距离
+    private final float SAFE_DIST = Constants.SAFE_DIST;//安全距离
 
     /**
      * 对各种状态的人进行不同的处理，更新发布市民健康状态
@@ -209,7 +203,7 @@ public class Person extends Point {
             } else {
                 //安置病人
                 useBed = bed;
-                state = State.FREEZE;
+                freeze();
                 setX(bed.getX());
                 setY(bed.getY());
                 bed.setEmpty(false);
@@ -233,15 +227,15 @@ public class Person extends Point {
         action();
         //处理健康人被感染的问题
         List<Person> people = PersonPool.getInstance().personList;
-        if (state.compareTo(State.SHADOW) >= 0) {
+        if (state == State.SHADOW) {
             return;
         }
-        //通过一个随机幸运值和安全距离决定感染其他人
+        
         for (Person person : people) {
             if (person.getState() == State.NORMAL) {
                 continue;
             }
-            float random = new Random().nextFloat();
+            double random = MathUtil.stdGaussian(1, Constants.BROAD_RATE);
             if (random < Constants.BROAD_RATE && distance(person) < SAFE_DIST) {
                 this.beInfected();
                 break;
