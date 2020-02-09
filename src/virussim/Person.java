@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * 能够随机运动的民众
+ *
  * @ClassName: Person
- * @Description: TODO
+ * @Description: 能够随机运动的民众
  * @author: Bruce Young
  * @date: 2020年02月02日 17:05
  */
+
 public class Person {
     private City city;
     private int x;
@@ -36,27 +39,7 @@ public class Person {
      * @author dy55
      */
     public enum State {
-        NORMAL, SUSPECTED, SHADOW, CONFIRMED, FREEZE, CURED;
-
-        public boolean gt(State another) {
-            return this.compareTo(another) > 0;
-        }
-
-        public boolean ge(State another) {
-            return this.compareTo(another) >= 0;
-        }
-
-        public boolean lt(State another) {
-            return this.compareTo(another) < 0;
-        }
-
-        public boolean le(State another) {
-            return this.compareTo(another) <= 0;
-        }
-
-        public boolean equals(State another) {
-            return this.compareTo(another) == 0;
-        }
+        NORMAL, SUSPECTED, SHADOW, CONFIRMED, FREEZE, DEATH, CURED
     }
 
     public Person(City city, int x, int y) {
@@ -101,9 +84,10 @@ public class Person {
 
     int infectedTime = 0;
     int confirmedTime = 0;
+    int dieMoment = 0;// 死亡时刻，为0代表未确定，-1代表不会病死
 
     public boolean isInfected() {
-        return state.ge(State.SHADOW);
+        return state.compareTo(State.SHADOW) > 0;
     }
 
     public void beInfected() {
@@ -115,9 +99,9 @@ public class Person {
         return Math.sqrt(Math.pow(x - person.getX(), 2) + Math.pow(y - person.getY(), 2));
     }
 
-    private void freezy() {
-        state = State.FREEZE;
-    }
+    // private void freezy() {
+    //     state = State.FREEZE;
+    // }
 
     private void moveTo(int x, int y) {
         this.x += x;
@@ -178,7 +162,7 @@ public class Person {
     }
 
     public void update() {
-        if (state.ge(State.FREEZE)) {
+        if (state.compareTo(State.FREEZE) > 0) {
             return;
         }
         if (state == State.CONFIRMED && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
@@ -197,15 +181,19 @@ public class Person {
                 bed.setEmpty(false);
             }
         }
-        if (MyPanel.worldTime - infectedTime > Constants.SHADOW_TIME && state == State.SHADOW) {
-            state = State.CONFIRMED;
-            confirmedTime = MyPanel.worldTime;
+        
+        // 增加一个正态分布用于潜伏期内随机发病时间
+        double stdRnShadowtime = MathUtil.stdGaussian(25, Constants.SHADOW_TIME / 2);
+        // 处理发病的潜伏期感染者
+        if (MyPanel.worldTime - infectedTime > stdRnShadowtime && state == State.SHADOW) {
+            state = State.CONFIRMED;// 潜伏者发病
+            confirmedTime = MyPanel.worldTime;// 刷新时间
         }
 
         action();
 
         List<Person> people = PersonPool.getInstance().personList;
-        if (state.ge(State.SHADOW)) {
+        if (state.compareTo(State.SHADOW) > 0) {
             return;
         }
         for (Person person : people) {

@@ -16,7 +16,5 @@ bin/
 .project
 
 # VS
-*.sln
-*.csproj
 obj/
 .vs/

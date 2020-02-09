@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 医院
+ *
  * @ClassName: Hospital
- * @Description: TODO
+ * @Description: 医院，包含床位容量
  * @author: Bruce Young
  * @date: 2020年02月02日 20:58
  */
-public class Hospital {
+public class Hospital extends Point {
 
-    private int x = 800;
-    private int y = 110;
+    public static final int HOSPITAL_X = 720;
+    public static final int HOSPITAL_Y = 80;
 
     private int width;
-    private int height = 606;
+    private int height = 600;
 
     public int getWidth() {
         return width;
@@ -25,24 +27,26 @@ public class Hospital {
         return height;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     private static Hospital hospital = new Hospital();
 
     public static Hospital getInstance() {
         return hospital;
     }
 
-    private Point point = new Point(800, 100);
+    private Point point = new Point(HOSPITAL_X, HOSPITAL_Y);
     private List<Bed> beds = new ArrayList<>();
 
+    /**
+     * 获取所有床位
+     *
+     * @return
+     */
+    public List<Bed> getBeds() {
+        return beds;
+    }
+
     private Hospital() {
+        super(HOSPITAL_X, HOSPITAL_Y + 10);
         // if (Constants.BED_COUNT == 0) {
         //     width = 0;
         //     height = 0;
