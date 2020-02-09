@@ -150,7 +150,6 @@ class Person(private val city: City, override var x: Int, override var y: Int) :
 
         //处理已经确诊的感染者（即患者）
         if (state == State.CONFIRMED && dieMoment == 0) {
-            //如果幸运数字落在死亡区间
             val dieTime = MathUtil.stdGaussian(Constants.DIE_VARIANCE, Constants.DIE_TIME.toDouble()).toInt()
             confirmedTime + dieTime//发病后确定死亡时刻
 
