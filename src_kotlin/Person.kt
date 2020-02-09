@@ -150,14 +150,10 @@ class Person(private val city: City, override var x: Int, override var y: Int) :
 
         //处理已经确诊的感染者（即患者）
         if (state == State.CONFIRMED && dieMoment == 0) {
-            val destiny = Random().nextInt(10000) + 1//幸运数字，[1,10000]随机数
-            dieMoment = if (1 <= destiny && destiny <= (Constants.FATALITY_RATE * 10000).toInt()) {
-                //如果幸运数字落在死亡区间
-                val dieTime = MathUtil.stdGaussian(Constants.DIE_VARIANCE, Constants.DIE_TIME.toDouble()).toInt()
-                confirmedTime + dieTime//发病后确定死亡时刻
-            } else {
-                -1//逃过了死神的魔爪
-            }
+            //如果幸运数字落在死亡区间
+            val dieTime = MathUtil.stdGaussian(Constants.DIE_VARIANCE, Constants.DIE_TIME.toDouble()).toInt()
+            confirmedTime + dieTime//发病后确定死亡时刻
+
         }
         //TODO 暂时缺失治愈出院市民的处理。需要确定一个变量用于治愈时长。由于案例太少，暂不加入。
 
