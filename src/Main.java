@@ -12,6 +12,7 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) {
+        ArgSolver.cliInit(args);
         initHospital();
         initPanel();
         initInfected();
@@ -30,6 +31,7 @@ public class Main {
         frame.setVisible(true);
         frame.setTitle("瘟疫传播模拟");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         panelThread.start();//开启画布线程，即世界线程，接着看代码的下一站可以转MyPanel.java
     }
 

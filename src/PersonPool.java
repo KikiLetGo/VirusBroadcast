@@ -28,13 +28,13 @@ public class PersonPool {
      * @param state 市民类型 Person.State的值，若为-1则返回当前总数目
      * @return 获取指定人群数量
      */
-    public int getPeopleSize(int state) {
-        if (state == -1) {
+    public int getPeopleSize(Person.State state) {
+        if (state == null) {
             return personList.size();
         }
         int i = 0;
         for (Person person : personList) {
-            if (person.getState() == state) {
+            if (person.getState().compareTo(state) == 0) {
                 i++;
             }
         }
@@ -45,7 +45,7 @@ public class PersonPool {
     private PersonPool() {
         City city = new City(400, 400);//设置城市中心为坐标(400,400)
         //添加城市居民
-        for (int i = 0; i < Constants.CITY_PERSON_SIZE; i++) {
+        for (int i = 0; i < Constants.POPULATION; i++) {
             Random random = new Random();
             //产生N(a,b)的数：Math.sqrt(b)*random.nextGaussian()+a
             int x = (int) (100 * random.nextGaussian() + city.getCenterX());

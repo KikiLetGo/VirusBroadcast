@@ -14,7 +14,10 @@ import java.util.TimerTask;
  */
 public class MyPanel extends JPanel implements Runnable {
 
-
+    /**
+     *
+     */
+    private static final long serialVersionUID = -5865496544871400953L;
 
     public MyPanel() {
         super();
@@ -28,7 +31,7 @@ public class MyPanel extends JPanel implements Runnable {
         //绘制医院边界
         g.drawRect(Hospital.getInstance().getX(), Hospital.getInstance().getY(),
                 Hospital.getInstance().getWidth(), Hospital.getInstance().getHeight());
-        g.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        g.setFont(new Font("等线", Font.BOLD, 16));
         g.setColor(new Color(0x00ff00));
         g.drawString("医院", Hospital.getInstance().getX() + Hospital.getInstance().getWidth() / 4, Hospital.getInstance().getY() - 16);
         //绘制代表人类的圆点
@@ -38,33 +41,33 @@ public class MyPanel extends JPanel implements Runnable {
         }
         for (Person person : people) {
             switch (person.getState()) {
-                case Person.State.NORMAL: {
-                    //健康人
-                    g.setColor(new Color(0xdddddd));
-                    break;
-                }
-                case Person.State.SHADOW: {
-                    //潜伏期感染者
-                    g.setColor(new Color(0xffee00));
-                    break;
-                }
-
-                case Person.State.CONFIRMED: {
-                    //确诊患者
-                    g.setColor(new Color(0xff0000));
-                    break;
-                }
-                case Person.State.FREEZE: {
-                    //已隔离者
-                    g.setColor(new Color(0x48FFFC));
-                    break;
-                }
-                case Person.State.DEATH: {
-                    //死亡患者
-
-                    g.setColor(new Color(0x000000));
-                    break;
-                }
+            case NORMAL:
+                //健康人
+                g.setColor(new Color(0xdddddd));
+                break;
+        
+            case SHADOW:
+                //潜伏期感染者
+                g.setColor(new Color(0xffee00));
+                break;
+        
+            case CONFIRMED: 
+                //确诊患者
+                g.setColor(new Color(0xff0000));
+                break;
+            
+            case FREEZE:
+                //已隔离者
+                g.setColor(new Color(0x48FFFC));
+                break;
+            
+            case DEATH:
+                //死亡患者
+                g.setColor(new Color(0x000000));
+                break;
+                
+            default:
+                break;
             }
             person.update();//对各种状态的市民进行不同的处理
             g.fillOval(person.getX(), person.getY(), 3, 3);
@@ -77,7 +80,7 @@ public class MyPanel extends JPanel implements Runnable {
 
         //显示数据信息
         g.setColor(Color.WHITE);
-        g.drawString("城市总人数：" + Constants.CITY_PERSON_SIZE, captionStartOffsetX, captionStartOffsetY);
+        g.drawString("城市总人数：" + Constants.POPULATION, captionStartOffsetX, captionStartOffsetY);
         g.setColor(new Color(0xdddddd));
         g.drawString("健康者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.NORMAL), captionStartOffsetX, captionStartOffsetY + captionSize);
         g.setColor(new Color(0xffee00));
@@ -110,6 +113,9 @@ public class MyPanel extends JPanel implements Runnable {
     class MyTimerTask extends TimerTask {
         @Override
         public void run() {
+            if (PersonPool.getInstance().getPeopleSize(Person.State.SHADOW) + PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED) == 0) {
+                timer.cancel();
+            }
             MyPanel.this.repaint();
             worldTime++;
         }
@@ -117,7 +123,7 @@ public class MyPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        timer.schedule(new MyTimerTask(), 0, 100);//启动世界计时器，时间开始流动（突然脑补DIO台词：時は停た）
+        timer.schedule(new MyTimerTask(), 0, 100);//启动世界计时器，时间开始流动
     }
 
 
