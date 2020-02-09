@@ -1,3 +1,5 @@
+package com.github.KikiLetGo;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;

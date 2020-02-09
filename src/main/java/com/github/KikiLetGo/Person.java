@@ -1,3 +1,5 @@
+package com.github.KikiLetGo;
+
 import java.util.List;
 import java.util.Random;
 

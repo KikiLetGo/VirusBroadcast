@@ -1,3 +1,5 @@
+package com.github.KikiLetGo;
+
 /**
  * 位置坐标基类
  *

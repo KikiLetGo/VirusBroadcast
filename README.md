@@ -4,3 +4,18 @@
 
 2020.2.6:
 病毒变异过程是一个不断适应的过程，可以尝试简单的DNN对病毒进行建模，已经开始着手实施。
+
+## Maven 用法
+
+```sh
+# 编译
+mvn compile
+# 运行
+mvn exec:java -Dexec.mainClass="com.github.KikiLetGo.VirusBroadcast"
+
+# 打包
+mvn package
+# 复制 jar 包 target/VirusBroadcast-1.0-SNAPSHOT.jar 即可单独执行
+cp target/VirusBroadcast-1.0-SNAPSHOT.jar ~/
+java -jar ~/VirusBroadcast-1.0-SNAPSHOT.jar
+```

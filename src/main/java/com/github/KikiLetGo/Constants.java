@@ -1,3 +1,5 @@
+package com.github.KikiLetGo;
+
 /**
  * 模拟参数
  *
