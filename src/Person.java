@@ -41,7 +41,7 @@ public class Person extends Point {
 
         //已治愈出院的人转为NORMAL即可，否则会与作者通过数值大小判断状态的代码冲突
         int DEATH = FREEZE + 1;//病死者
-        //int CURED = DEATH + 1;//治愈数量用于计算治愈出院后归还床位数量，该状态是否存续待定
+        int CURED = DEATH + 1;//治愈数量用于计算治愈出院后归还床位数量，该状态是否存续待定
     }
 
     public Person(City city, int x, int y) {
@@ -86,6 +86,7 @@ public class Person extends Point {
     int infectedTime = 0;//感染时刻
     int confirmedTime = 0;//确诊时刻
     int dieMoment = 0;//死亡时刻，为0代表未确定，-1代表不会病死
+    int cureMoment = 0;//治愈时刻
 
 
     public boolean isInfected() {
@@ -195,7 +196,7 @@ public class Person extends Point {
     public void update() {
         //@TODO找时间改为状态机
 
-        if (state == State.FREEZE || state == State.DEATH) {
+        if (state == State.DEATH) {
             return;//如果已经隔离或者死亡了，就不需要处理了
         }
 
@@ -213,8 +214,20 @@ public class Person extends Point {
 
             }
         }
-        //TODO 暂时缺失治愈出院市民的处理。需要确定一个变量用于治愈时长。由于案例太少，暂不加入。
+        //治愈
+        if (state == State.FREEZE && cureMoment == 0) {
+            int cureTime = (int) MathUtil.stdGaussian(Constants.CURE_VARIANCE, Constants.CURE_TIME);
+            if (cureTime > dieMoment - MyPanel.worldTime && dieMoment > 0) {
+                cureMoment = -1; //来不及治好，死亡时间在治愈时间之前
+            } else {
+                cureMoment = MyPanel.worldTime + cureTime;
+            }
+        }
 
+        if (state == State.FREEZE && cureMoment > 0 && MyPanel.worldTime >= cureMoment) {
+            state = State.CURED;
+            Hospital.getInstance().returnBed(useBed);
+        }
 
         if (state == State.CONFIRMED
                 && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
@@ -237,6 +250,9 @@ public class Person extends Point {
         //处理病死者
         if ((state == State.CONFIRMED || state == State.FREEZE) && MyPanel.worldTime >= dieMoment && dieMoment > 0) {
             state = State.DEATH;//患者死亡
+            // 随机丢弃尸体，没有火葬场和墓地，暂时这样处理
+            super.setX((int) MathUtil.stdGaussian(100, city.getCenterX()));
+            super.setY((int) MathUtil.stdGaussian(100, city.getCenterY()));
             Hospital.getInstance().returnBed(useBed);//归还床位
         }
 
