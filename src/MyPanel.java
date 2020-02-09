@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * 主面板。
@@ -21,6 +21,14 @@ public class MyPanel extends JPanel implements Runnable {
         this.setBackground(new Color(0x444444));
     }
 
+    List <Integer> list_normal = new ArrayList();
+    List <Integer> list_worldtime = new ArrayList();
+
+    int[] xPoints = {};
+    int[] yPoints = {};
+
+
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -31,7 +39,28 @@ public class MyPanel extends JPanel implements Runnable {
         g.setFont(new Font("微软雅黑", Font.BOLD, 16));
         g.setColor(new Color(0x00ff00));
         g.drawString("医院", Hospital.getInstance().getX() + Hospital.getInstance().getWidth() / 4, Hospital.getInstance().getY() - 16);
-        //绘制代表人类的圆点
+
+
+        list_normal.add((5000-PersonPool.getInstance().getPeopleSize(Person.State.NORMAL))/7); //[1344, 83]
+        list_worldtime.add((int) (worldTime ));
+
+//        System.out.println(list_normal.get(list_normal.size()-1));
+        xPoints = list_worldtime.stream().mapToInt(Integer::valueOf).toArray();
+        yPoints = list_normal.stream().mapToInt(Integer::valueOf).toArray();
+//        System.out.println(xPoints.length-1);
+
+        Graphics2D g2d = (Graphics2D) g.create();
+        // 抗锯齿
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // 设置画笔颜色
+        g2d.setColor(Color.RED);
+        g2d.drawPolyline(xPoints, yPoints, xPoints.length);
+        // 自己创建的副本用完要销毁掉
+        g2d.dispose();
+
+
+
+            //绘制代表人类的圆点
         List<Person> people = PersonPool.getInstance().getPersonList();
         if (people == null) {
             return;
@@ -112,8 +141,13 @@ public class MyPanel extends JPanel implements Runnable {
         public void run() {
             MyPanel.this.repaint();
             worldTime++;
+
         }
     }
+
+
+
+
 
     @Override
     public void run() {
