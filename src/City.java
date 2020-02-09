@@ -1,5 +1,3 @@
-package virussim;
-
 /**
  * 城市描述对象
  *

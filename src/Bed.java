@@ -1,5 +1,3 @@
-package virussim;
-
 /**
  * 床位
  *
