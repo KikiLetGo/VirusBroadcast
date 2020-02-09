@@ -77,8 +77,6 @@ public class Person extends Point {
 
     int infectedTime = 0;//感染时刻
     int confirmedTime = 0;//确诊时刻
-    int dieMoment = 0;//死亡时刻，为0代表未确定
-
 
     public boolean isInfected() {
         return state.compareTo(State.SHADOW) >= 0;
@@ -192,22 +190,27 @@ public class Person extends Point {
             // 对隔离患者判断治愈成功率
             float success = new Random().nextFloat();
             if (success < Constants.RECOVERY_RATE) {
+                // 成功治愈
                 state = State.NORMAL;
+
+                // 根据正态分布选点
                 Random random = new Random();
                 int x = (int) (100 * random.nextGaussian() + city.getCenterX());
                 int y = (int) (100 * random.nextGaussian() + city.getCenterY());
                 if (x > 700) {
                     x = 700;
                 }
+
+                // 将人放回城市
                 setX(x);
                 setY(y);
+                PersonPool.RECOVERED++; // 治愈人次增加1
             }
         }
 
         //处理已经确诊的感染者（即患者）
-        if (state == State.CONFIRMED && dieMoment == 0) {
-            int dieTime = (int) MathUtil.stdGaussian(Constants.DIE_VARIANCE, Constants.DIE_TIME);
-            dieMoment = confirmedTime + dieTime;//发病后确定死亡时刻
+        if (state == State.CONFIRMED) {
+            
         }
 
 
@@ -229,8 +232,9 @@ public class Person extends Point {
             }
         }
 
+        float rand = new Random().nextFloat();
         //处理病死者
-        if ((state == State.CONFIRMED || state == State.FREEZE) && MyPanel.worldTime >= dieMoment) {
+        if ((state == State.CONFIRMED || state == State.FREEZE) && rand < Constants.FATALITY_RATE) {
             state = State.DEATH;//患者死亡
             Hospital.getInstance().returnBed(useBed);//归还床位
         }
@@ -255,7 +259,7 @@ public class Person extends Point {
                 continue;
             }
             float random = new Random().nextFloat();
-            if (random < Constants.BROAD_RATE && distance(person) < SAFE_DIST) {
+            if (random < Constants.BROAD_RATE && distance(person) < SAFE_DIST && !Hospital.getInstance().inHospital(getX(), getY())) {
                 this.beInfected();
                 break;
             }

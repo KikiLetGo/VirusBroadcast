@@ -40,7 +40,8 @@ public class PersonPool {
         }
         return i;
     }
-    
+
+    public static int RECOVERED = 0; // 治愈人次
 
     private PersonPool() {
         City city = new City(400, 400);//设置城市中心为坐标(400,400)

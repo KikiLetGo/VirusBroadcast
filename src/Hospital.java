@@ -26,7 +26,6 @@ public class Hospital extends Point {
         return height;
     }
 
-
     private static Hospital hospital = new Hospital();
 
     public static Hospital getInstance() {
