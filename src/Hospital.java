@@ -93,4 +93,8 @@ public class Hospital extends Point {
         }
         return bed;
     }
+
+    public boolean inHospital(int x, int y) {
+        return x >= HOSPITAL_X && x <= HOSPITAL_X + width && y >= HOSPITAL_Y && y <= HOSPITAL_Y + height;
+    }
 }

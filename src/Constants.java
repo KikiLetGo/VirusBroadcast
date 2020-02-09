@@ -28,4 +28,7 @@ public class Constants {
     public static final int CITY_HEIGHT = 800;
 
     public static float SAFE_DIST = 2f; // 安全距离
+
+    public static float RECOVERY_RATE = 0.002f; // 治愈率
+
 }

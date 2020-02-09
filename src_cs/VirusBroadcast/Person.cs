@@ -17,7 +17,7 @@ namespace VirusBroadcast {
 		private double targetSigma = 50;
 
 		public enum State {
-			NORMAL, SUSPECTED, SHADOW, CONFIRMED, FREEZE, DEATH, CURED
+			NORMAL, SUSPECTED, SHADOW, CONFIRMED, FREEZE, DEATH
 		}
 
 		public Person(City city, int x, int y) : base(x, y) {
@@ -153,7 +153,7 @@ namespace VirusBroadcast {
 				if(person.CurState == State.NORMAL) {
 					continue;
 				}
-
+				var rand = new Random()
 			}
 		}
 	}

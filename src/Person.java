@@ -33,7 +33,7 @@ public class Person extends Point {
      * @author dy55
      */
     public enum State {
-        NORMAL, SUSPECTED, SHADOW, CONFIRMED, FREEZE, DEATH, CURED
+        NORMAL, SUSPECTED, SHADOW, CONFIRMED, FREEZE, DEATH
     }
 
     public Person(City city, int x, int y) {
@@ -181,8 +181,27 @@ public class Person extends Point {
     public void update() {
         //@TODO找时间改为状态机
 
-        if (state == State.FREEZE || state == State.DEATH) {
-            return;//如果已经隔离或者死亡了，就不需要处理了
+        if (state == State.DEATH) {
+            if (Hospital.getInstance().inHospital(getX(), getY())) {
+                setX(0);
+                setY(0);
+            }
+        }
+
+        if (state == State.FREEZE) {
+            // 对隔离患者判断治愈成功率
+            double success = MathUtil.stdGaussian(1, Constants.RECOVERY_RATE);
+            if (success >= 2) {
+                state = State.NORMAL;
+                Random random = new Random();
+                int x = (int) (100 * random.nextGaussian() + city.getCenterX());
+                int y = (int) (100 * random.nextGaussian() + city.getCenterY());
+                if (x > 700) {
+                    x = 700;
+                }
+                setX(x);
+                setY(y);
+            }
         }
 
         //处理已经确诊的感染者（即患者）
@@ -235,7 +254,7 @@ public class Person extends Point {
             if (person.getState() == State.NORMAL) {
                 continue;
             }
-            double random = MathUtil.stdGaussian(1, Constants.BROAD_RATE);
+            float random = new Random().nextFloat();
             if (random < Constants.BROAD_RATE && distance(person) < SAFE_DIST) {
                 this.beInfected();
                 break;
