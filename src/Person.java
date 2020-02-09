@@ -227,10 +227,10 @@ public class Person extends Point {
         action();
         //处理健康人被感染的问题
         List<Person> people = PersonPool.getInstance().personList;
-        if (state == State.SHADOW) {
+        if (state.compareTo(State.SHADOW) >= 0) {
             return;
         }
-        
+
         for (Person person : people) {
             if (person.getState() == State.NORMAL) {
                 continue;
