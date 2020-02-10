@@ -97,8 +97,10 @@ public class MyPanel extends JPanel implements Runnable {
         g.drawString("急需病床：" + (needBeds > 0 ? needBeds : 0), captionStartOffsetX, captionStartOffsetY + 6 * captionSize);
         g.setColor(new Color(0xccbbcc));
         g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), captionStartOffsetX, captionStartOffsetY + 7 * captionSize);
-        g.setColor(new Color(0xffffff));
+        g.setColor(new Color(0xdd00cc));
         g.drawString("世界时间（天）：" + (int) (worldTime / 10.0), captionStartOffsetX, captionStartOffsetY + 8 * captionSize);
+        g.setColor(new Color(0xffffff));
+        g.drawString("意向流动率：" + String.format("%.2f", Constants.u), captionStartOffsetX, captionStartOffsetY + 9 * captionSize);
 
     }
 
