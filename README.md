@@ -4,3 +4,14 @@
 
 2020.2.6:
 病毒变异过程是一个不断适应的过程，可以尝试简单的DNN对病毒进行建模，已经开始着手实施。
+
+####如何编译工程
+首先您得安装 [maven](https://maven.apache.org)
+
+
+MacOs可以使用 ```brew install maven```
+
+使用```maven install```编译工程
+
+使用 ```mvn exec:java``` 运行主类（UI）
+

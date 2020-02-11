@@ -1,3 +1,7 @@
+package entity;
+
+import util.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -40,7 +44,7 @@ public class PersonPool {
         }
         return i;
     }
-    
+
 
     private PersonPool() {
         City city = new City(400, 400);//设置城市中心为坐标(400,400)

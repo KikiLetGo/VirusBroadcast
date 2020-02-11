@@ -1,3 +1,5 @@
+package entity;
+
 /**
  * 病毒对象
  *

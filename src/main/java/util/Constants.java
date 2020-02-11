@@ -1,3 +1,5 @@
+package util;
+
 /**
  * 模拟参数
  *

@@ -1,3 +1,5 @@
+package entity;
+
 /**
  * 位置坐标基类
  *

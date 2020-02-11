@@ -1,3 +1,10 @@
+package ui;
+
+import entity.Hospital;
+import entity.Person;
+import entity.PersonPool;
+import util.Constants;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -13,7 +20,6 @@ import java.util.TimerTask;
  * @date: 2020年02月02日 17:03
  */
 public class MyPanel extends JPanel implements Runnable {
-
 
 
     public MyPanel() {

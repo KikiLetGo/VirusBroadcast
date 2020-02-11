@@ -1,5 +1,12 @@
-import javax.swing.*;
+package ui;
 
+import entity.Hospital;
+import entity.Person;
+import entity.PersonPool;
+import ui.MyPanel;
+import util.Constants;
+
+import javax.swing.*;
 import java.util.List;
 import java.util.Random;
 
