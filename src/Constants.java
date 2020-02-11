@@ -8,7 +8,7 @@
  */
 public class Constants {
 
-    public static int ORIGINAL_COUNT = 50;//初始感染数量
+    public static int ORIGINAL_COUNT = 25;//初始感染数量
     public static float BROAD_RATE = 0.8f;//传播率
     public static float SHADOW_TIME = 140;//潜伏时间，14天为140
     public static int HOSPITAL_RECEIVE_TIME = 10;//医院收治响应时间
@@ -21,9 +21,11 @@ public class Constants {
      */
     public static float u = 0.99f;
     public static int CITY_PERSON_SIZE = 5000;//城市总人口数量
-    public static float FATALITY_RATE = 0.50f;//fatality_rate病死率，根据2月6日数据估算（病死数/确诊数）为0.02
+    public static float FATALITY_RATE = 0.05f;//fatality_rate病死率，根据2月6日数据估算（病死数/确诊数）为0.02
     public static int DIE_TIME = 100;//死亡时间均值，30天，从发病（确诊）时开始计时
     public static double DIE_VARIANCE = 1;//死亡时间方差
+    public static int CURE_TIME = 150;//治愈时间均值
+    public static double CURE_VARIANCE = 20;//治愈时间方差
     /**
      * 城市大小即窗口边界，限制不允许出城
      */

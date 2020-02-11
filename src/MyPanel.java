@@ -65,6 +65,10 @@ public class MyPanel extends JPanel implements Runnable {
                     g.setColor(new Color(0x000000));
                     break;
                 }
+                case Person.State.CURED: {
+                    //治愈患者
+                    g.setColor(new Color(0x00ff00));
+                }
             }
             person.update();//对各种状态的市民进行不同的处理
             g.fillOval(person.getX(), person.getY(), 3, 3);
@@ -95,10 +99,12 @@ public class MyPanel extends JPanel implements Runnable {
                 - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE);
 
         g.drawString("急需病床：" + (needBeds > 0 ? needBeds : 0), captionStartOffsetX, captionStartOffsetY + 6 * captionSize);
-        g.setColor(new Color(0xccbbcc));
+        g.setColor(new Color(0x000000));
         g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), captionStartOffsetX, captionStartOffsetY + 7 * captionSize);
+        g.setColor(new Color(0x00ff00));
+        g.drawString("治愈人数：" + PersonPool.getInstance().getPeopleSize(Person.State.CURED), captionStartOffsetX, captionStartOffsetY + 8 * captionSize);
         g.setColor(new Color(0xffffff));
-        g.drawString("世界时间（天）：" + (int) (worldTime / 10.0), captionStartOffsetX, captionStartOffsetY + 8 * captionSize);
+        g.drawString("世界时间（天）：" + (int) (worldTime / 10.0), captionStartOffsetX, captionStartOffsetY + 9 * captionSize);
 
     }
 
