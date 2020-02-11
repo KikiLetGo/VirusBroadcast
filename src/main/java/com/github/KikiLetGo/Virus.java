@@ -1,3 +1,5 @@
+package com.github.KikiLetGo;
+
 /**
  * 病毒对象
  *

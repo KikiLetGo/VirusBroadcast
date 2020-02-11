@@ -1,3 +1,5 @@
+package com.github.KikiLetGo;
+
 /**
  * 城市描述对象
  *

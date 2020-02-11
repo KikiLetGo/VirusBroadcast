@@ -1,5 +1,6 @@
-import javax.swing.*;
+package com.github.KikiLetGo;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Random;
 
@@ -9,7 +10,7 @@ import java.util.Random;
  * @author
  * @comment GinRyan
  */
-public class Main {
+public class VirusBroadcast {
 
     public static void main(String[] args) {
         initHospital();
