@@ -1,6 +1,9 @@
 /**
  * 城市描述对象
+ *<hr>
+ *设置城市的坐标
  *
+ *只包含了坐标
  * @ClassName: City
  * @Description: 城市描述对象
  * @author: Bruce Young
