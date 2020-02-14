@@ -1,3 +1,8 @@
+package entity;
+
+import lombok.Getter;
+import util.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,12 +22,8 @@ public class PersonPool {
         return personPool;
     }
 
+    @Getter
     List<Person> personList = new ArrayList<Person>();
-
-    public List<Person> getPersonList() {
-        return personList;
-    }
-
 
     /**
      * @param state 市民类型 Person.State的值，若为-1则返回当前总数目
@@ -40,7 +41,7 @@ public class PersonPool {
         }
         return i;
     }
-    
+
 
     private PersonPool() {
         City city = new City(400, 400);//设置城市中心为坐标(400,400)

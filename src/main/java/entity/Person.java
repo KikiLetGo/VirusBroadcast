@@ -1,3 +1,9 @@
+package entity;
+
+import ui.MyPanel;
+import util.Constants;
+import util.MathUtil;
+
 import java.util.List;
 import java.util.Random;
 

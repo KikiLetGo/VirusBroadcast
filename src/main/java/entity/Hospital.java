@@ -1,6 +1,10 @@
+package entity;
+
+import lombok.Getter;
+import util.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 医院
@@ -15,18 +19,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Hospital extends Point {
     public static final int HOSPITAL_X = 720;
     public static final int HOSPITAL_Y = 80;
+    @Getter
     private int width;
+    @Getter
     private int height = 600;
-
-    public int getWidth() {
-        return width;
-    }
-
-
-    public int getHeight() {
-        return height;
-    }
-
 
     private static Hospital hospital = new Hospital();
 

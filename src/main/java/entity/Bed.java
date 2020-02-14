@@ -1,6 +1,10 @@
+package entity;
+
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 床位
- *
  *
  * @ClassName: Bed
  * @Description: 床位
@@ -15,13 +19,7 @@ public class Bed extends Point {
     /**
      * 是否占用了该床位
      */
+    @Setter
+    @Getter
     private boolean isEmpty = true;
-
-    public boolean isEmpty() {
-        return isEmpty;
-    }
-
-    public void setEmpty(boolean empty) {
-        isEmpty = empty;
-    }
 }
