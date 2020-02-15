@@ -1,7 +1,9 @@
+package starter;
+
 /**
  * 模拟参数
  *
- * @ClassName: Constants
+ * @ClassName: start.Constants
  * @Description: 模拟参数
  * @author: Bruce Young
  * @date: 2020年02月02日 21:40

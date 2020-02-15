@@ -1,13 +1,16 @@
+package nonliving;
+
+import starter.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 医院
  * <p>
  * 床位容量
  *
- * @ClassName: Hospital
+ * @ClassName: nonliving.Hospital
  * @Description: 医院，包含床位容量
  * @author: Bruce Young
  * @date: 2020年02月02日 20:58

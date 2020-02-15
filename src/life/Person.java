@@ -1,16 +1,42 @@
+package life;
+
+import nonliving.*;
+import Util.MathUtil;
+import starter.MyPanel;
+import starter.Constants;
+import state.*;
+
 import java.util.List;
 import java.util.Random;
 
 /**
  * 能够随机运动的民众
  *
- * @ClassName: Person
+ * @ClassName: life.Person
  * @Description: 能够随机运动的民众
  * @author: Bruce Young
  * @date: 2020年02月02日 17:05
  */
 
 public class Person extends Point {
+    //人员状态机
+    private State confirmState;
+    private State deathState;
+    private State freezeState;
+    private State normalState;
+    private State shadowState;
+    private State suspectedState;
+
+    private State state; //人员的当前状态
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
     private City city;
 
     private MoveTarget moveTarget;
@@ -31,7 +57,7 @@ public class Person extends Point {
      * 市民的状态
      * <p>
      * 市民状态应该需要细分，虽然有的状态暂未纳入模拟，但是细分状态应该保留
-     */
+     *//*
     public interface State {
         int NORMAL = 0;//正常人，未感染的健康人
         int SUSPECTED = NORMAL + 1;//有暴露感染风险
@@ -42,7 +68,7 @@ public class Person extends Point {
         //已治愈出院的人转为NORMAL即可，否则会与作者通过数值大小判断状态的代码冲突
         int DEATH = FREEZE + 1;//病死者
         //int CURED = DEATH + 1;//治愈数量用于计算治愈出院后归还床位数量，该状态是否存续待定
-    }
+    }*/
 
     public Person(City city, int x, int y) {
         super(x, y);
@@ -51,6 +77,14 @@ public class Person extends Point {
         targetXU = MathUtil.stdGaussian(100, x);
         targetYU = MathUtil.stdGaussian(100, y);
 
+        //状态机初始化
+        confirmState = new ConfirmState(this);
+        deathState = new DeathState(this);
+        freezeState = new FreezeState(this);
+        normalState = new NormalState(this);
+        shadowState = new ShadowState(this);
+        suspectedState = new SuspecteState(this);
+        state = new NormalState(this);
     }
 
     /**
@@ -73,7 +107,7 @@ public class Person extends Point {
         return MathUtil.stdGaussian(sig, Constants.u) > 0;
     }
 
-    private int state = State.NORMAL;
+    /*private int state = State.NORMAL;
 
     public int getState() {
         return state;
@@ -81,7 +115,7 @@ public class Person extends Point {
 
     public void setState(int state) {
         this.state = state;
-    }
+    }*/
 
     int infectedTime = 0;//感染时刻
     int confirmedTime = 0;//确诊时刻
@@ -89,11 +123,15 @@ public class Person extends Point {
 
 
     public boolean isInfected() {
-        return state >= State.SHADOW;
+        return state instanceof ShadowState
+            || state instanceof ConfirmState
+            || state instanceof FreezeState
+            || state instanceof DeathState;
     }
 
     public void beInfected() {
-        state = State.SHADOW;
+        shadowState.beShadow();
+
         infectedTime = MyPanel.worldTime;
     }
 
@@ -111,7 +149,7 @@ public class Person extends Point {
      * 住院
      */
     private void freezy() {
-        state = State.FREEZE;
+        freezeState.beFreeze();
     }
 
     /**
@@ -119,7 +157,7 @@ public class Person extends Point {
      */
     private void action() {
 
-        if (state == State.FREEZE || state == State.DEATH) {
+        if (state instanceof FreezeState || state instanceof DeathState) {
             return;//如果处于隔离或者死亡状态，则无法行动
         }
         if (!wantMove()) {
@@ -195,12 +233,12 @@ public class Person extends Point {
     public void update() {
         //@TODO找时间改为状态机
 
-        if (state == State.FREEZE || state == State.DEATH) {
+        if (state instanceof FreezeState || state instanceof DeathState) {
             return;//如果已经隔离或者死亡了，就不需要处理了
         }
 
         //处理已经确诊的感染者（即患者）
-        if (state == State.CONFIRMED && dieMoment == 0) {
+        if (state instanceof ConfirmState && dieMoment == 0) {
 
             int destiny = new Random().nextInt(10000) + 1;//幸运数字，[1,10000]随机数
             if (1 <= destiny && destiny <= (int) (Constants.FATALITY_RATE * 10000)) {
@@ -216,7 +254,7 @@ public class Person extends Point {
         //TODO 暂时缺失治愈出院市民的处理。需要确定一个变量用于治愈时长。由于案例太少，暂不加入。
 
 
-        if (state == State.CONFIRMED
+        if (state instanceof ConfirmState
                 && MyPanel.worldTime - confirmedTime >= Constants.HOSPITAL_RECEIVE_TIME) {
             //如果患者已经确诊，且（世界时刻-确诊时刻）大于医院响应时间，即医院准备好病床了，可以抬走了
             Bed bed = Hospital.getInstance().pickBed();//查找空床位
@@ -227,7 +265,7 @@ public class Person extends Point {
             } else {
                 //安置病人
                 useBed = bed;
-                state = State.FREEZE;
+                freezeState.beFreeze();
                 setX(bed.getX());
                 setY(bed.getY());
                 bed.setEmpty(false);
@@ -235,28 +273,28 @@ public class Person extends Point {
         }
 
         //处理病死者
-        if ((state == State.CONFIRMED || state == State.FREEZE) && MyPanel.worldTime >= dieMoment && dieMoment > 0) {
-            state = State.DEATH;//患者死亡
+        if ((state instanceof ConfirmState || state instanceof FreezeState) && MyPanel.worldTime >= dieMoment && dieMoment > 0) {
+            deathState.beDeath();//患者死亡
             Hospital.getInstance().returnBed(useBed);//归还床位
         }
 
         //增加一个正态分布用于潜伏期内随机发病时间
         double stdRnShadowtime = MathUtil.stdGaussian(25, Constants.SHADOW_TIME / 2);
         //处理发病的潜伏期感染者
-        if (MyPanel.worldTime - infectedTime > stdRnShadowtime && state == State.SHADOW) {
-            state = State.CONFIRMED;//潜伏者发病
+        if (MyPanel.worldTime - infectedTime > stdRnShadowtime && state instanceof ShadowState) {
+            confirmState.beConfirmed();//潜伏者发病
             confirmedTime = MyPanel.worldTime;//刷新时间
         }
         //处理未隔离者的移动问题
         action();
         //处理健康人被感染的问题
         List<Person> people = PersonPool.getInstance().personList;
-        if (state >= State.SHADOW) {
+        if (isInfected()) {
             return;
         }
         //通过一个随机幸运值和安全距离决定感染其他人
         for (Person person : people) {
-            if (person.getState() == State.NORMAL) {
+            if (person.getState() instanceof NormalState) {
                 continue;
             }
             float random = new Random().nextFloat();
