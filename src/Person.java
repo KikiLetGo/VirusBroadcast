@@ -81,6 +81,10 @@ public class Person extends Point {
 		return MathUtil.stdGaussian(sig, Constants.u) > 0;
 	}
 
+	String wantMoveSubs(float x) {
+		return x > 0.5 ? "人们随意走动" : "人们限制出行";
+	}
+
 	private int state = State.NORMAL;
 
 	public int getState() {
@@ -252,9 +256,11 @@ public class Person extends Point {
 			if (bed == null) {
 
 				// 没有床位了，报告需求床位数
+//				Constants.NEED_BED_COUNT++;
 
 			} else {
 				// 安置病人
+//				移到医院区域，这个时候小点依然是红色。会出现这种情况：一轮循环在下一轮开始前移动很多红点到医院区域，下一轮开始之后才变为蓝色
 				useBed = bed;
 				state = State.FREEZE;
 				setX(bed.getX());
