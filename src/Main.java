@@ -1,3 +1,9 @@
+import life.Person;
+import nonliving.Hospital;
+import nonliving.PersonPool;
+import starter.Constants;
+import starter.MyPanel;
+
 import javax.swing.*;
 
 import java.util.List;

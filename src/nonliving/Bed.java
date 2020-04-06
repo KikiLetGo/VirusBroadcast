@@ -1,8 +1,10 @@
+package nonliving;
+
 /**
  * 床位
  *
  *
- * @ClassName: Bed
+ * @ClassName: nonliving.Bed
  * @Description: 床位
  * @author: Bruce Young
  * @date: 2020年02月02日 21:00
