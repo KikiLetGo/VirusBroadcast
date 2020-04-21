@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Hospital extends Point {
     public static final int HOSPITAL_X = 720;
     public static final int HOSPITAL_Y = 80;
+    public static int bedInNeed = 0;
     private int width;
     private int height = 600;
 
@@ -93,10 +94,11 @@ public class Hospital extends Point {
      * @param bed
      * @return
      */
-    public Bed returnBed(Bed bed) {
+    public void returnBed(Bed bed) {
         if (bed != null) {
+            beds.remove(bed);
             bed.setEmpty(true);
+            beds.add(bed);
         }
-        return bed;
     }
 }

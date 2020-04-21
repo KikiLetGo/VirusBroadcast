@@ -13,7 +13,7 @@ public class Bed extends Point {
     }
 
     /**
-     * 是否占用了该床位
+     * 是否空闲
      */
     private boolean isEmpty = true;
 

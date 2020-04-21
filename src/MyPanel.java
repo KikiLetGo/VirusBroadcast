@@ -37,6 +37,8 @@ public class MyPanel extends JPanel implements Runnable {
             return;
         }
         for (Person person : people) {
+            person.update();//对各种状态的市民进行不同的处理
+
             switch (person.getState()) {
                 case Person.State.NORMAL: {
                     //健康人
@@ -62,11 +64,10 @@ public class MyPanel extends JPanel implements Runnable {
                 case Person.State.DEATH: {
                     //死亡患者
 
-                    g.setColor(new Color(0x000000));
+                    g.setColor(new Color(0x808080));
                     break;
                 }
             }
-            person.update();//对各种状态的市民进行不同的处理
             g.fillOval(person.getX(), person.getY(), 3, 3);
 
         }
@@ -77,7 +78,7 @@ public class MyPanel extends JPanel implements Runnable {
 
         //显示数据信息
         g.setColor(Color.WHITE);
-        g.drawString("城市总人数：" + Constants.CITY_PERSON_SIZE, captionStartOffsetX, captionStartOffsetY);
+        g.drawString("城市总人数：" + (Constants.CITY_PERSON_SIZE - PersonPool.getInstance().getPeopleSize(Person.State.DEATH)), captionStartOffsetX, captionStartOffsetY);
         g.setColor(new Color(0xdddddd));
         g.drawString("健康者人数：" + PersonPool.getInstance().getPeopleSize(Person.State.NORMAL), captionStartOffsetX, captionStartOffsetY + captionSize);
         g.setColor(new Color(0xffee00));
@@ -91,11 +92,11 @@ public class MyPanel extends JPanel implements Runnable {
         g.setColor(new Color(0xE39476));
         //暂定急需病床数量为 NEED = 确诊发病者数量 - 已隔离住院数量
         //
-        int needBeds = PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED)
-                - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE);
+        /*int needBeds = PersonPool.getInstance().getPeopleSize(Person.State.CONFIRMED)
+                - PersonPool.getInstance().getPeopleSize(Person.State.FREEZE);*/
 
-        g.drawString("急需病床：" + (needBeds > 0 ? needBeds : 0), captionStartOffsetX, captionStartOffsetY + 6 * captionSize);
-        g.setColor(new Color(0xccbbcc));
+        g.drawString("急需病床：" + Hospital.bedInNeed , captionStartOffsetX, captionStartOffsetY + 6 * captionSize);
+        g.setColor(new Color(0x808080));
         g.drawString("病死人数：" + PersonPool.getInstance().getPeopleSize(Person.State.DEATH), captionStartOffsetX, captionStartOffsetY + 7 * captionSize);
         g.setColor(new Color(0xffffff));
         g.drawString("世界时间（天）：" + (int) (worldTime / 10.0), captionStartOffsetX, captionStartOffsetY + 8 * captionSize);
