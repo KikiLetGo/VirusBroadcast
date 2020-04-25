@@ -70,6 +70,13 @@ public class Person extends Point {
      * @return
      */
     public boolean wantMove() {
+        // 计算感染人数占比
+        double nfectedRate = (double) (PersonPool.getInstance().getPeopleSize(State.SHADOW)
+                + PersonPool.getInstance().getPeopleSize(State.CONFIRMED)
+                + PersonPool.getInstance().getPeopleSize(State.DEATH)
+                + PersonPool.getInstance().getPeopleSize(Person.State.FREEZE)) / Constants.CITY_PERSON_SIZE;
+        // 使用由双曲正切函数缩两倍变化而来的函数，拟合流动意向平均值随感染率的变换
+        Constants.u = (float) Math.tanh(2 * ((-2 * nfectedRate) + 1));
         return MathUtil.stdGaussian(sig, Constants.u) > 0;
     }
 
