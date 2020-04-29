@@ -33,14 +33,14 @@ public class Person extends Point {
      * 市民状态应该需要细分，虽然有的状态暂未纳入模拟，但是细分状态应该保留
      */
     public interface State {
-        int NORMAL = 0;//正常人，未感染的健康人
-        int SUSPECTED = NORMAL + 1;//有暴露感染风险
-        int SHADOW = SUSPECTED + 1;//潜伏期
-        int CONFIRMED = SHADOW + 1;//发病且已确诊为感染病人
-        int FREEZE = CONFIRMED + 1;//隔离治疗，禁止位移
+        int NORMAL = 0;//正常人，未感染的健康人  0
+        int SUSPECTED = NORMAL + 1;//有暴露感染风险 1
+        int SHADOW = SUSPECTED + 1;//潜伏期 2
+        int CONFIRMED = SHADOW + 1;//发病且已确诊为感染病人 3
+        int FREEZE = CONFIRMED + 1;//隔离治疗，禁止位移 4
 
         //已治愈出院的人转为NORMAL即可，否则会与作者通过数值大小判断状态的代码冲突
-        int DEATH = FREEZE + 1;//病死者
+        int DEATH = FREEZE + 1;//病死者 5
         //int CURED = DEATH + 1;//治愈数量用于计算治愈出院后归还床位数量，该状态是否存续待定
     }
 
@@ -195,13 +195,12 @@ public class Person extends Point {
     public void update() {
         //@TODO找时间改为状态机
 
-        if (state == State.FREEZE || state == State.DEATH) {
-            return;//如果已经隔离或者死亡了，就不需要处理了
+        if (state == State.DEATH) {
+            return;//如果死亡了，就不需要处理了
         }
 
         //处理已经确诊的感染者（即患者）
-        if (state == State.CONFIRMED && dieMoment == 0) {
-
+        if ((state == State.CONFIRMED ||state == State.FREEZE)  && dieMoment == 0) {
             int destiny = new Random().nextInt(10000) + 1;//幸运数字，[1,10000]随机数
             if (1 <= destiny && destiny <= (int) (Constants.FATALITY_RATE * 10000)) {
 
@@ -267,3 +266,4 @@ public class Person extends Point {
         }
     }
 }
+
