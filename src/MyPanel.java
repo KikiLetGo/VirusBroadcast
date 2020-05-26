@@ -108,10 +108,22 @@ public class MyPanel extends JPanel implements Runnable {
     public Timer timer = new Timer();
 
     class MyTimerTask extends TimerTask {
+        public boolean isStop(){
+            boolean result=false;
+            //动画重绘终止条件， 以被隔离达到或超过100人时停止为例。
+            //if (PersonPool.getInstance().getPeopleSize(Person.State.FREEZE)>=100) {result = true;};
+            //运行到世界时间30天。
+            //if ((int) (worldTime / 10.0)>=30) {result = true;};
+            return  result;
+        }
+
         @Override
         public void run() {
-            MyPanel.this.repaint();
-            worldTime++;
+            //增加动画重绘终止条件
+            if (!this.isStop()) {
+                MyPanel.this.repaint();
+                worldTime++;
+            }
         }
     }
 
